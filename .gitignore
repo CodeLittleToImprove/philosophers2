@@ -1,0 +1,19 @@
+**/*.o
+**/*.a
+.vscode/
+# Ignore any specific executables
+philo
+
+# Ignore build directories
+/cmake-build-debug/
+/cmake-build-release/
+/build/
+
+# Ignore other common files/folders
+.idea/
+*.user
+*.log
+*.swp
+*.bak
+*.tmp
+*.DS_Store
