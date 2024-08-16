@@ -68,6 +68,8 @@ typedef struct s_fork
 	pthread_mutex_t	fork_mutex;
 }	t_fork;
 
+typedef struct s_table	t_table;
+
 typedef struct s_philo
 {
 	int			id;
@@ -76,19 +78,35 @@ typedef struct s_philo
 	t_fork		*second_fork;
 	pthread_t	thread_id;
 	pthread_mutex_t	philo_mutex;
+	t_table		*table;
 }	t_philo;
 
+struct s_table
+{
+	size_t			philo_nbr;
+	long			time_to_die_in_ms;
+	long			time_to_eat_in_ms;
+	long			time_to_sleep_in_ms;
+	long			nbr_limit_meals;
+	pthread_t	monitor;
+	pthread_mutex_t	write_mutex;
+	t_fork			*forks;
+	t_philo			*philos;
+};
+
+//parsing.c
+bool	parse_input(t_table *table, const int argc, char *argv[]);
 //safe_function_handler
-void			*safe_malloc(size_t bytes);
 void			*safe_malloc(size_t bytes);
 void			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
 void			safe_thread_handle(pthread_t *thread, void *(foo)(void*),
 						void *data, t_opcode opcode);
+
 //getter_setter.c
 void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value);
 bool	get_bool(pthread_mutex_t *mutex, bool *value);
-long	get_long(pthread_mutex_t *mutex, long *value);
 void	set_long(pthread_mutex_t *mutex, long *dest, long value);
+long	get_long(pthread_mutex_t *mutex, long *value);
 // utils.c
 int	error_exit(const char *error, ErrorLevel error_level);
 // write_status.c

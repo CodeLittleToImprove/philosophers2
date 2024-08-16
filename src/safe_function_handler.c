@@ -18,7 +18,7 @@ void	*safe_malloc(size_t bytes)
 
 	ret = malloc(bytes);
 	if (ret == NULL)
-		error_exit("Error with the malloc");
+		error_exit("Error with the malloc", ERROR_CRITICAL);
 	return (ret);
 }
 
@@ -28,17 +28,17 @@ static	void	handle_mutex_error(int status, t_opcode opcode)
 		return ;
 	if ((status == EINVAL && opcode == LOCK) || opcode == UNLOCK
 		|| opcode == DESTROY)
-		error_exit("The value specified by mutex is invalid.");
+		error_exit("The value specified by mutex is invalid.", ERROR_CRITICAL);
 	else if (status == EINVAL && opcode == INIT)
-		error_exit("The value specified by attr is invalid.");
+		error_exit("The value specified by attr is invalid.", ERROR_CRITICAL);
 	else if (status == EDEADLK)
-		error_exit("A deadlock would occur if thread blocked waiting for mutex.");
+		error_exit("A deadlock would occur if thread blocked waiting for mutex.", ERROR_CRITICAL);
 	else if (status == EPERM)
-		error_exit("The current thread does not hold a lock on mutex");
+		error_exit("The current thread does not hold a lock on mutex.", ERROR_CRITICAL);
 	else if (status == ENOMEM)
-		error_exit("The process cannot allocate enough memory to create another mutex");
+		error_exit("The process cannot allocate enough memory to create another mutex.", ERROR_CRITICAL);
 	else if (status == EBUSY)
-		error_exit("Mutex is locked");
+		error_exit("Mutex is locked.", ERROR_CRITICAL);
 }
 
 void	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode)
@@ -52,7 +52,7 @@ void	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode)
 	else if (opcode == DESTROY)
 		handle_mutex_error(pthread_mutex_destroy(mutex), opcode);
 	else
-		error_exit("Wrong opcode for mutex handler ");
+		error_exit("Wrong opcode for mutex handler", ERROR_CRITICAL);
 }
 
 static	void	handle_thread_error(int status, t_opcode opcode)
@@ -60,19 +60,19 @@ static	void	handle_thread_error(int status, t_opcode opcode)
 	if (status == 0)
 		return ;
 	if (status == EAGAIN)
-		error_exit("Insufficient ressources to create another thread");
+		error_exit("Insufficient ressources to create another thread", ERROR_CRITICAL);
 	else if (status == EPERM)
-		error_exit("The caller does not have appropriate permission \n");
+		error_exit("The caller does not have appropriate permission \n", ERROR_CRITICAL);
 	else if (status == EINVAL && opcode == CREATE)
-		error_exit("The value specified by attr is invalid");
+		error_exit("The value specified by attr is invalid", ERROR_CRITICAL);
 	else if ((status == EINVAL && opcode == JOIN) || opcode == DETACH)
-		error_exit("The value specified by threads is not joinable \n");
+		error_exit("The value specified by threads is not joinable \n", ERROR_CRITICAL);
 	else if (status == ESRCH)
 		error_exit("No thread could be found corresponding to that"
-			"specified by the given thread ID, thread.");
+			"specified by the given thread ID, thread.", ERROR_CRITICAL);
 	else if (status == EDEADLK)
 		error_exit("A deadlock was detected oor the value of"
-			"thread specifies the calling thread.");
+			"thread specifies the calling thread.", ERROR_CRITICAL);
 }
 
 void safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_opcode opcode)
@@ -82,7 +82,7 @@ void safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_op
 	if (opcode == CREATE)
 	{
 		if (thread == NULL || foo == NULL)
-			error_exit("Null pointer passed for thread creation.");
+			error_exit("Null pointer passed for thread creation.", ERROR_CRITICAL);
 		status = pthread_create(thread, NULL, foo, data);
 		handle_thread_error(status, opcode);
 		// printf("Thread created: %ld\n", (long)*thread);  // Added logging for thread creation
@@ -90,7 +90,7 @@ void safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_op
 	else if (opcode == JOIN)
 	{
 		if (thread == NULL)
-			error_exit("Null pointer passed for thread join.");
+			error_exit("Null pointer passed for thread join.", ERROR_CRITICAL);
 		status = pthread_join(*thread, NULL);
 		handle_thread_error(status, opcode);
 		// printf("Thread joined: %ld\n", (long)*thread);  // Added logging for thread joining
@@ -98,12 +98,12 @@ void safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_op
 	else if (opcode == DETACH)
 	{
 		if (thread == NULL)
-			error_exit("Null pointer passed for thread detach.");
+			error_exit("Null pointer passed for thread detach.", ERROR_CRITICAL);
 		status = pthread_detach(*thread);
 		handle_thread_error(status, opcode);
 		// printf("Thread detaching: %ld\n", (long)*thread);  // Added logging for thread detaching
 	}
 	else
-		error_exit("Wrong opcode for thread_handle: use <CREATE> <JOIN> <DETACH>");
+		error_exit("Wrong opcode for thread_handle: use <CREATE> <JOIN> <DETACH>", ERROR_CRITICAL);
 }
 

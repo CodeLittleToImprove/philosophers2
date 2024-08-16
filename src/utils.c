@@ -16,7 +16,7 @@ int	error_exit(const char *error, ErrorLevel error_level)
 	printf(R "%s\n" RESET, error);
 	if (error_level == ERROR_CRITICAL)
 	{
-		printf(R "Program tries to exits safely\n" RESET, error);
+		printf(R "Program tries to exits safely\n" RESET);
 		return (-2);
 	}
 	else if (error_level == ERROR_MINOR)
