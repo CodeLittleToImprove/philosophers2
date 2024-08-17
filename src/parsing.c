@@ -12,37 +12,15 @@
 
 #include "../lib/philo.h"
 
-static	bool	is_space(char c)
+static	bool	is_space(const char c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
 }
 
-static	bool	is_digit(char c)
+static	bool	is_digit(const char c)
 {
 	return (c >= '0' && c <= '9');
 }
-
-// static	const char	*valid_input(const char *str)
-// {
-// 	int			len;
-// 	const char	*ptr_nbr_start;
-//
-// 	len = 0;
-// 	while (is_space(*str))
-// 		str++;
-// 	if (*str == '+')
-// 		str++;
-// 	else if (*str == '-')
-// 		error_exit("Only positive numbers allowed", ERROR_MINOR);
-// 	if (!is_digit(*str))
-// 		error_exit("Input contains not only digits", ERROR_MINOR);
-// 	ptr_nbr_start = str;
-// 	while (is_digit(*str++))
-// 		len++;
-// 	if (len > 10)
-// 		error_exit("The value is too big, INT_MAX is the limit", ERROR_MINOR);
-// 	return (ptr_nbr_start);
-// }
 
 static const char *get_number_start(const char *str)
 {
@@ -54,7 +32,7 @@ static const char *get_number_start(const char *str)
 		return NULL;
 	return str;
 }
-// maybe delete error exit, kinda useless
+
 static bool is_valid_input(const char *str)
 {
 	int	len;
@@ -66,18 +44,16 @@ static bool is_valid_input(const char *str)
 	if (*str == '+')
 		str++;
 	else if (*str == '-')
-	{
-		error_exit("Only positive numbers allowed", ERROR_MINOR);
-		return false;
-	}
+		return (error_msg(STR_ERR_INPUT_DIGIT, false));
 	if (!is_digit(*str))
+		return (error_msg(STR_ERR_NO_DIGIT, false));
+	while (is_digit(*str))
 	{
-		error_exit("Input contains not only digits", ERROR_MINOR);
-		return false;
+		if (++len > 10)
+			return (error_msg(STR_ERR_OVER_INT_MAX, false));
+		str++;
 	}
-	while (is_digit(*str++))
-		len++;
-	return (len <= 10);
+	return true;
 }
 
 static	long	ft_atol(const char *str)
@@ -89,14 +65,14 @@ static	long	ft_atol(const char *str)
 	while (is_digit(*str))
 		num = (num * 10) + (*str++ - '0');
 	if (num > INT_MAX)
-		error_exit("The value is too big, INT_MAX is the limit", ERROR_MINOR);
+		return (error_msg(STR_ERR_OVER_INT_MAX, false));
 	return (num);
 }
 
 bool	parse_input(t_table *table, const int argc, char *argv[])
 {
 	bool	valid_input;
-	int i;
+	int	i;
 
 	valid_input = false;
 	i = 1;
@@ -104,10 +80,7 @@ bool	parse_input(t_table *table, const int argc, char *argv[])
 	{
 		valid_input = is_valid_input(argv[i]);
 		if (!valid_input)
-		{
-			error_exit("Invalid input", ERROR_MINOR);
-			return false;
-		}
+			return (error_msg(INVALID_INPUT_EXIT, false));
 	i++;
 	}
 

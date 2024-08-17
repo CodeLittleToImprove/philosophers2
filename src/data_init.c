@@ -1,32 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/14 18:04:07 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/08/14 18:04:07 by tbui-quo         ###   ########.fr       */
+/*   Created: 2024/08/17 15:45:50 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/08/17 15:45:50 by tbui-quo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/philo.h"
 
-int	main(int argc, char *argv[])
-{
-	t_table	table;
-	if (argc == 5 || argc == 6)
-	{
-		if (parse_input(&table, argc, argv))
-		{
-			// data_init(&table);
-			// dinner_start(&table);
-			// clean(&table);
-		}
-		else
-			return (-1);
-	}
-	else
-		error_msg(STR_USAGE, 0);
-	return (0);
-}

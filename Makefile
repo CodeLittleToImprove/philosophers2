@@ -15,10 +15,10 @@ NAME = philo
 
 # Directories and source files
 SRC = src/parsing.c \
-src/getter_setter.c \
+src/data_init.c \
 src/main.c \
-src/safe_function_handler.c \
 src/utils.c
+#src/getter_setter.c \
 #src/write_status.c
 
 
