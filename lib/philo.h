@@ -40,7 +40,7 @@
 "[number_of_times_each_philosopher_must_eat]\n"
 # define STR_ERR_INPUT_DIGIT	"Not a valid unsigned integer between 0 and 2147483647.\n"
 # define STR_ERR_OVER_INT_MAX	"The value is too big, INT_MAX is the limit"
-# define INVALID_INPUT_EXIT	"Error: Invalid input detected. The program will now terminate safely."
+# define STR_INVALID_INPUT_EXIT	"Error: Invalid input detected. The program will now terminate safely."
 # define STR_ERR_INPUT_POFLOW	"There must be between 1 and 250 philosophers.\n"
 # define STR_ERR_THREAD	"%s error: Could not create thread.\n"
 # define STR_ERR_MALLOC	"%s error: Could not allocate memory.\n"
@@ -106,6 +106,7 @@ struct s_table
 	t_philo			*philos;
 };
 
+
 //parsing.c
 bool	parse_input(t_table *table, const int argc, char *argv[]);
 // //safe_function_handler
@@ -114,6 +115,8 @@ bool	parse_input(t_table *table, const int argc, char *argv[]);
 // void			safe_thread_handle(pthread_t *thread, void *(foo)(void*),
 // 						void *data, t_opcode opcode);
 
+//data_init.c
+void	data_init(t_table *table);
 //getter_setter.c
 void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value);
 bool	get_bool(pthread_mutex_t *mutex, bool *value);

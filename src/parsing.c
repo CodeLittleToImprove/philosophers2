@@ -80,7 +80,7 @@ bool	parse_input(t_table *table, const int argc, char *argv[])
 	{
 		valid_input = is_valid_input(argv[i]);
 		if (!valid_input)
-			return (error_msg(INVALID_INPUT_EXIT, false));
+			return (false);
 	i++;
 	}
 

@@ -19,14 +19,14 @@ int	main(int argc, char *argv[])
 	{
 		if (parse_input(&table, argc, argv))
 		{
-			// data_init(&table);
+			data_init(&table);
 			// dinner_start(&table);
 			// clean(&table);
 		}
 		else
-			return (-1);
+			return (error_msg(STR_INVALID_INPUT_EXIT, -1));
 	}
 	else
-		error_msg(STR_USAGE, 0);
+		error_msg(STR_USAGE, -2);
 	return (0);
 }

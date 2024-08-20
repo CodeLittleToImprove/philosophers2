@@ -12,3 +12,12 @@
 
 #include "../lib/philo.h"
 
+void	data_init(t_table *table)
+{
+	size_t	i;
+
+	i = 0;
+	table->philos = (t_philo *) malloc(sizeof(t_philo) * table->philo_nbr);
+	table->forks = (t_fork *) malloc(sizeof(t_fork) *table->philo_nbr);
+	// free properly after a malloc fails!!
+}
