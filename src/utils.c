@@ -33,6 +33,7 @@
 // 		printf(str, STR_PROG_NAME, detail);
 // 	return (exit_no);
 // }
+
 int	error_msg(const char *str, int exit_nbr)
 {
 	printf(R "%s\n" RESET, str);

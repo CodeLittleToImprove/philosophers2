@@ -100,8 +100,9 @@ struct s_table
 	long			time_to_eat_in_ms;
 	long			time_to_sleep_in_ms;
 	long			nbr_limit_meals;
-	pthread_t	monitor;
-	pthread_mutex_t	write_mutex;
+	pthread_t		monitor;
+	pthread_mutex_t	write_status_mutex;
+	pthread_mutex_t	table_mutex;
 	t_fork			*forks;
 	t_philo			*philos;
 };
@@ -110,13 +111,13 @@ struct s_table
 //parsing.c
 bool	parse_input(t_table *table, const int argc, char *argv[]);
 // //safe_function_handler
-// void			*safe_malloc(size_t bytes);
-// void			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
+void			*safe_malloc(size_t bytes);
+bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
 // void			safe_thread_handle(pthread_t *thread, void *(foo)(void*),
 // 						void *data, t_opcode opcode);
 
 //data_init.c
-void	data_init(t_table *table);
+bool	data_init(t_table *table);
 //getter_setter.c
 void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value);
 bool	get_bool(pthread_mutex_t *mutex, bool *value);

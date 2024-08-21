@@ -10,7 +10,7 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 //
-// #include "../lib/philo.h"
+#include "../lib/philo.h"
 //
 // void	*safe_malloc(size_t bytes)
 // {
@@ -22,38 +22,54 @@
 // 	return (ret);
 // }
 //
-// static	void	handle_mutex_error(int status, t_opcode opcode)
-// {
-// 	if (status == 0)
-// 		return ;
-// 	if ((status == EINVAL && opcode == LOCK) || opcode == UNLOCK
-// 		|| opcode == DESTROY)
-// 		error_exit("The value specified by mutex is invalid.", ERROR_CRITICAL);
-// 	else if (status == EINVAL && opcode == INIT)
-// 		error_exit("The value specified by attr is invalid.", ERROR_CRITICAL);
-// 	else if (status == EDEADLK)
-// 		error_exit("A deadlock would occur if thread blocked waiting for mutex.", ERROR_CRITICAL);
-// 	else if (status == EPERM)
-// 		error_exit("The current thread does not hold a lock on mutex.", ERROR_CRITICAL);
-// 	else if (status == ENOMEM)
-// 		error_exit("The process cannot allocate enough memory to create another mutex.", ERROR_CRITICAL);
-// 	else if (status == EBUSY)
-// 		error_exit("Mutex is locked.", ERROR_CRITICAL);
-// }
+
+void	*safe_malloc(size_t bytes)
+{
+	void	*ret;
+	ret = malloc(bytes);
+	if (ret == NULL)
+		printf(R "Error with malloc: Could not allocate memory.\n" RESET);
+	return (ret);
+}
+
+static	bool	handle_mutex_error(int status, t_opcode opcode)
+{
+	const char *error_message;
+	if (status == 0)
+		return (0);
+	error_message = "Unexpected error, no clue";
+	if ((status == EINVAL && (opcode == LOCK || opcode == UNLOCK
+		|| opcode == DESTROY)))
+		error_message = "The value specified by mutex is invalid.";
+	else if (status == EINVAL && opcode == INIT)
+		error_message = "The value specified by attr is invalid.";
+	else if (status == EDEADLK)
+		error_message = "A deadlock would occur if thread blocked waiting for mutex.";
+	else if (status == EPERM)
+		error_message = "The current thread does not hold a lock on mutex.";
+	else if (status == ENOMEM)
+		error_message = "The process cannot allocate enough memory to create another mutex.";
+	else if (status == EBUSY)
+		error_message = "Mutex is locked.";
+	printf(R "%s\n" RESET, error_message);
+	return (true);
+}
+
 //
-// void	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode)
-// {
-// 	if (opcode == LOCK)
-// 		handle_mutex_error(pthread_mutex_lock(mutex), opcode);
-// 	else if (opcode == UNLOCK)
-// 		handle_mutex_error(pthread_mutex_unlock(mutex), opcode);
-// 	else if (opcode == INIT)
-// 		handle_mutex_error(pthread_mutex_init(mutex, NULL), opcode);
-// 	else if (opcode == DESTROY)
-// 		handle_mutex_error(pthread_mutex_destroy(mutex), opcode);
-// 	else
-// 		error_exit("Wrong opcode for mutex handler", ERROR_CRITICAL);
-// }
+bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode)
+{
+	int status = 0;
+
+	if (opcode == LOCK)
+		status = pthread_mutex_lock(mutex);
+	else if (opcode == UNLOCK)
+		status = pthread_mutex_unlock(mutex);
+	else if (opcode == INIT)
+		status = pthread_mutex_init(mutex, NULL);
+	else if (opcode == DESTROY)
+		status = pthread_mutex_destroy(mutex);
+	return handle_mutex_error(status, opcode) == false;
+}
 //
 // static	void	handle_thread_error(int status, t_opcode opcode)
 // {
