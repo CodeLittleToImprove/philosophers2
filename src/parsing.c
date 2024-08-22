@@ -22,25 +22,24 @@ static	bool	is_digit(const char c)
 	return (c >= '0' && c <= '9');
 }
 
-static const char *get_number_start(const char *str)
+static const char	*get_number_start(const char *str)
 {
 	while (is_space(*str))
 		str++;
 	if (*str == '+')
 		str++;
 	if (*str == '-' || !is_digit(*str))
-		return NULL;
-	return str;
+		return (NULL);
+	return (str);
 }
 
-static bool is_valid_input(const char *str)
+static bool	is_valid_input(const char *str)
 {
 	int	len;
 
 	len = 0;
 	while (is_space(*str))
 		str++;
-
 	if (*str == '+')
 		str++;
 	else if (*str == '-')
@@ -53,7 +52,7 @@ static bool is_valid_input(const char *str)
 			return (error_msg(STR_ERR_OVER_INT_MAX, false));
 		str++;
 	}
-	return true;
+	return (true);
 }
 
 static	long	ft_atol(const char *str)
@@ -72,7 +71,7 @@ static	long	ft_atol(const char *str)
 bool	parse_input(t_table *table, const int argc, char *argv[])
 {
 	bool	valid_input;
-	int	i;
+	int		i;
 
 	valid_input = false;
 	i = 1;
@@ -81,11 +80,10 @@ bool	parse_input(t_table *table, const int argc, char *argv[])
 		valid_input = is_valid_input(argv[i]);
 		if (!valid_input)
 			return (false);
-	i++;
+		i++;
 	}
-
 	table->philo_nbr = ft_atol(argv[1]);
-	table->time_to_die_in_ms= ft_atol(argv[2]);
+	table->time_to_die_in_ms = ft_atol(argv[2]);
 	table->time_to_eat_in_ms = ft_atol(argv[3]);
 	table->time_to_sleep_in_ms = ft_atol(argv[4]);
 	// if (table->time_to_die_in_usec < MIN_TIME_IN_MILLISECONDS
@@ -96,7 +94,6 @@ bool	parse_input(t_table *table, const int argc, char *argv[])
 		table->nbr_limit_meals = ft_atol(argv[5]);
 	else
 		table->nbr_limit_meals = -1;
-
 	printf("Number of philosophers: %ld\n", table->philo_nbr);
 	printf("Time to die (ms): %ld\n", table->time_to_die_in_ms);
 	printf("Time to eat (ms): %ld\n", table->time_to_eat_in_ms);

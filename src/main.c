@@ -15,13 +15,14 @@
 int	main(int argc, char *argv[])
 {
 	t_table	table;
+
 	if (argc == 5 || argc == 6)
 	{
 		if (parse_input(&table, argc, argv))
 		{
-			data_init(&table);
+			data_init(&table); // destroy mutexes and free memory when fail
 			// dinner_start(&table);
-			// clean(&table);
+			clean(&table);
 		}
 		else
 			return (error_msg(STR_INVALID_INPUT_EXIT, -1));

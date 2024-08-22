@@ -84,13 +84,13 @@ typedef struct s_table	t_table;
 
 typedef struct s_philo
 {
-	int			id;
-	long		meals_counter;
-	t_fork		*first_fork;
-	t_fork		*second_fork;
-	pthread_t	thread_id;
+	int				id;
+	long			meals_counter;
+	t_fork			*first_fork;
+	t_fork			*second_fork;
+	pthread_t		thread_id;
 	pthread_mutex_t	philo_mutex;
-	t_table		*table;
+	t_table			*table;
 }	t_philo;
 
 struct s_table
@@ -124,7 +124,8 @@ bool	get_bool(pthread_mutex_t *mutex, bool *value);
 void	set_long(pthread_mutex_t *mutex, long *dest, long value);
 long	get_long(pthread_mutex_t *mutex, long *value);
 // utils.c
-int	error_msg(const char *str, int exit_nbr);
+int		error_msg(const char *str, int exit_nbr);
+void	clean(t_table *table);
 // write_status.c
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 #endif //PHILO_H

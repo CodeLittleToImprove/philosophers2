@@ -11,17 +11,6 @@
 // /* ************************************************************************** */
 //
 #include "../lib/philo.h"
-//
-// void	*safe_malloc(size_t bytes)
-// {
-// 	void	*ret;
-//
-// 	ret = malloc(bytes);
-// 	if (ret == NULL)
-// 		error_exit("Error with the malloc", ERROR_CRITICAL);
-// 	return (ret);
-// }
-//
 
 void	*safe_malloc(size_t bytes)
 {
@@ -36,7 +25,7 @@ static	bool	handle_mutex_error(int status, t_opcode opcode)
 {
 	const char *error_message;
 	if (status == 0)
-		return (0);
+		return (false);
 	error_message = "Unexpected error, no clue";
 	if ((status == EINVAL && (opcode == LOCK || opcode == UNLOCK
 		|| opcode == DESTROY)))

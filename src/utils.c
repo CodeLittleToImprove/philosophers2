@@ -40,6 +40,24 @@ int	error_msg(const char *str, int exit_nbr)
 	return (exit_nbr);
 }
 
+void	clean(t_table *table)
+{
+	t_philo	*philo;
+	size_t	i;
+
+	i = 0;
+	while (i < table->philo_nbr)
+	{
+		philo = table->philos + 1;
+		safe_mutex_handle(&philo->philo_mutex, DESTROY);
+		i++;
+	}
+	safe_mutex_handle(&table->write_status_mutex, DESTROY);
+	safe_mutex_handle(&table->table_mutex, DESTROY);
+	free(table->forks);
+	free(table->philos);
+}
+
 /* error_failure:
 *	Frees any allocated memory, prints an error message and
 *	returns 0 to indicate failure.
