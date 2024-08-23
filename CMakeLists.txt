@@ -12,6 +12,8 @@ add_executable(philo
 #        src/synchro_utils.c
         src/data_init.c
         src/safe_function_handler.c
+        src/dinner.c
+        src/time.c
         #        src/write_status.c
 #        src/monitoring.c
 )

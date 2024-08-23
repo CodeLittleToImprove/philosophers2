@@ -18,7 +18,8 @@ SRC = src/parsing.c \
 src/data_init.c \
 src/main.c \
 src/utils.c \
-src/safe_function_handler.c
+src/safe_function_handler.c \
+src/time.c
 #src/getter_setter.c \
 #src/write_status.c
 

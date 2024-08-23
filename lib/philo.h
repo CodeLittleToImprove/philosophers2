@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <stdlib.h>
+#include <unistd.h>
 # include <stdbool.h>
 # include <limits.h>
 # include <pthread.h>
@@ -45,7 +46,7 @@
 # define STR_ERR_THREAD	"%s error: Could not create thread.\n"
 # define STR_ERR_MALLOC	"%s error: Could not allocate memory.\n"
 # define STR_ERR_MUTEX	"%s error: Could not create mutex.\n"
-
+#define ONE_SECOND_IN_MS 1000
 #define DEBUG_MODE 1
 typedef enum e_status
 {
@@ -68,11 +69,12 @@ typedef enum e_opcode
 	DETACH,
 } t_opcode;
 
-typedef enum
+typedef enum e_time_code
 {
-	ERROR_CRITICAL,
-	ERROR_MINOR
-} ErrorLevel;
+	SECOND,
+	MILLISECOND,
+	MICROSECOND,
+} t_time_code;
 
 typedef struct s_fork
 {
@@ -126,6 +128,8 @@ long	get_long(pthread_mutex_t *mutex, long *value);
 // utils.c
 int		error_msg(const char *str, int exit_nbr);
 void	clean(t_table *table);
+// time.c
+time_t	gettime(t_time_code time_code)
 // write_status.c
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 #endif //PHILO_H
