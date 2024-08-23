@@ -66,13 +66,10 @@ void	precise_usleep(time_t sleep_time_ms, t_table *table)
 {
 	time_t	start_time_usec;
 	time_t	sleep_time_usec;
-	time_t	wake_up_time_usec;
 	time_t	time_passed_usec;
 	time_t	remaining_time_in_usec;
 
-
 	start_time_usec = gettime(MICROSECOND);
-	sleep_time_usec = sleep_time_ms / 1e3;
 	sleep_time_usec = sleep_time_ms / 1e3;
 
 	while (gettime(MICROSECOND) - start_time_usec < sleep_time_usec)
