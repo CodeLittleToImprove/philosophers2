@@ -33,8 +33,15 @@
 // 		printf(str, STR_PROG_NAME, detail);
 // 	return (exit_no);
 // }
+// maybe not needed
+int	error_failure(const char *str, t_table *table)
+{
+	if (table != NULL)
+		clean(table);
+	return (error_msg(str, 0));
+}
 
-int	error_msg(const char *str, int exit_nbr)
+int	error_msg(const char *str, const int exit_nbr)
 {
 	printf(R "%s\n" RESET, str);
 	return (exit_nbr);

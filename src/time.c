@@ -28,10 +28,10 @@
 // 		error_exit("Wrong input to gettime!");
 // 	return (0);
 // }
-
+// Seconds: sec
 // Milliseconds: ms
 // Microseconds: usec
-// Seconds: sec
+
 time_t	gettime(t_time_code time_code)
 {
 	struct timeval		tv;

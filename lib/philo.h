@@ -95,6 +95,7 @@ typedef struct s_philo
 	t_table			*table;
 }	t_philo;
 
+//maybe change datatype of long to time_t
 struct s_table
 {
 	size_t			philo_nbr;
@@ -102,6 +103,8 @@ struct s_table
 	long			time_to_eat_in_ms;
 	long			time_to_sleep_in_ms;
 	long			nbr_limit_meals;
+	time_t			start_time_in_ms;
+	bool			end_simulation;
 	pthread_t		monitor;
 	pthread_mutex_t	write_status_mutex;
 	pthread_mutex_t	table_mutex;
@@ -114,9 +117,8 @@ struct s_table
 bool	parse_input(t_table *table, const int argc, char *argv[]);
 // //safe_function_handler
 void			*safe_malloc(size_t bytes);
-bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
-// void			safe_thread_handle(pthread_t *thread, void *(foo)(void*),
-// 						void *data, t_opcode opcode);
+bool			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
+bool			safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_opcode opcode);
 
 //data_init.c
 bool	data_init(t_table *table);
@@ -127,9 +129,10 @@ void	set_long(pthread_mutex_t *mutex, long *dest, long value);
 long	get_long(pthread_mutex_t *mutex, long *value);
 // utils.c
 int		error_msg(const char *str, int exit_nbr);
+int		error_failure(const char *str, t_table *table);
 void	clean(t_table *table);
 // time.c
-time_t	gettime(t_time_code time_code)
+time_t	gettime(t_time_code time_code);
 // write_status.c
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 #endif //PHILO_H
