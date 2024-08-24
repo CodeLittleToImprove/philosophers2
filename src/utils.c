@@ -33,11 +33,12 @@
 // 		printf(str, STR_PROG_NAME, detail);
 // 	return (exit_no);
 // }
+
 // maybe not needed
 int	error_failure(const char *str, t_table *table)
 {
 	if (table != NULL)
-		clean(table);
+		cleanup_simulation(table);
 	return (error_msg(str, 0));
 }
 
@@ -47,7 +48,7 @@ int	error_msg(const char *str, const int exit_nbr)
 	return (exit_nbr);
 }
 
-void	clean(t_table *table)
+void	cleanup_simulation(t_table *table)
 {
 	t_philo	*philo;
 	size_t	i;

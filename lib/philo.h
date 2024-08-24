@@ -88,6 +88,7 @@ typedef struct s_philo
 {
 	int				id;
 	long			meals_counter;
+	time_t			last_meal_time_ms;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
 	pthread_t		thread_id;
@@ -104,6 +105,7 @@ struct s_table
 	long			time_to_sleep_in_ms;
 	long			nbr_limit_meals;
 	time_t			start_time_in_ms;
+	bool			all_threads_ready;
 	bool			end_simulation;
 	pthread_t		monitor;
 	pthread_mutex_t	write_status_mutex;
@@ -114,7 +116,7 @@ struct s_table
 
 
 //parsing.c
-bool	parse_input(t_table *table, const int argc, char *argv[]);
+bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[]);
 // //safe_function_handler
 void			*safe_malloc(size_t bytes);
 bool			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
@@ -125,14 +127,16 @@ bool	data_init(t_table *table);
 //getter_setter.c
 void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value);
 bool	get_bool(pthread_mutex_t *mutex, bool *value);
-void	set_long(pthread_mutex_t *mutex, long *dest, long value);
-long	get_long(pthread_mutex_t *mutex, long *value);
+// void	set_long(pthread_mutex_t *mutex, long *dest, long value);
+// long	get_long(pthread_mutex_t *mutex, long *value);
 // utils.c
 int		error_msg(const char *str, int exit_nbr);
 int		error_failure(const char *str, t_table *table);
-void	clean(t_table *table);
+void	cleanup_simulation(t_table *table);
 // time.c
 time_t	gettime(t_time_code time_code);
+void	wait_all_threads(t_table *table);
+void	precise_usleep(time_t sleep_time_ms, t_table *table);
 // write_status.c
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 #endif //PHILO_H

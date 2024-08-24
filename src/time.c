@@ -49,18 +49,11 @@ time_t	gettime(t_time_code time_code)
 	return (0);
 }
 
-// void	philo_sleep(t_table *table, time_t sleep_time)
-// {
-// 	time_t	wake_up;
-//
-// 	wake_up = get_time_in_ms() + sleep_time;
-// 	while (get_time_in_ms() < wake_up)
-// 	{
-// 		if (has_simulation_stopped(table))
-// 			break ;
-// 		usleep(100);
-// 	}
-// }
+void	wait_all_threads(t_table *table)
+{
+	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
+		usleep(ONE_SECOND_IN_MS); // maybe buggy lets see
+}
 
 void	precise_usleep(time_t sleep_time_ms, t_table *table)
 {

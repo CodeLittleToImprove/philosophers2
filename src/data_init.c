@@ -84,6 +84,8 @@ static	bool	philo_init(t_table *table)
 
 bool	data_init(t_table *table)
 {
+	table->end_simulation = false;
+	table->all_threads_ready = false;
 	if (!allocate_philos_and_forks(table))
 		return (false);
 	if (table->forks == NULL) // because of clion tells me that

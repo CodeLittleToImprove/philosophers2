@@ -68,7 +68,7 @@ static	long	ft_atol(const char *str)
 	return (num);
 }
 
-bool	parse_input(t_table *table, const int argc, char *argv[])
+bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[])
 {
 	bool	valid_input;
 	int		i;
