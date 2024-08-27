@@ -49,7 +49,7 @@ time_t	gettime(t_time_code time_code)
 	return (0);
 }
 
-void	wait_all_threads(t_table *table)
+void	wait_until_all_threads_ready(t_table *table)
 {
 	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
 		usleep(ONE_SECOND_IN_MS); // maybe buggy lets see

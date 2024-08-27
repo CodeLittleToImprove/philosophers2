@@ -15,6 +15,7 @@ add_executable(philo
         src/dinner.c
         src/time.c
         src/getter_setter.c
+        src/monitoring.c
         #        src/write_status.c
 #        src/monitoring.c
 )

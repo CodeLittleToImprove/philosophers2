@@ -99,5 +99,6 @@ bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[])
 	printf("Time to eat (ms): %ld\n", table->time_to_eat_in_ms);
 	printf("Time to sleep (ms): %ld\n", table->time_to_sleep_in_ms);
 	printf("Number of meals limit: %ld\n", table->nbr_limit_meals);
+	// maybe add check if time_to_die is below x MS
 	return (true);
 }

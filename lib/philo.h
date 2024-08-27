@@ -46,8 +46,10 @@
 # define STR_ERR_THREAD	"%s error: Could not create thread.\n"
 # define STR_ERR_MALLOC	"%s error: Could not allocate memory.\n"
 # define STR_ERR_MUTEX	"%s error: Could not create mutex.\n"
-#define ONE_SECOND_IN_MS 1000
-#define DEBUG_MODE 1
+# define ONE_SECOND_IN_MS 1000
+# define DEBUG_MODE 1
+# define EVEN 0
+# define ODD 1
 typedef enum e_status
 {
 	EATING,
@@ -100,9 +102,9 @@ typedef struct s_philo
 struct s_table
 {
 	size_t			philo_nbr;
-	long			time_to_die_in_ms;
-	long			time_to_eat_in_ms;
-	long			time_to_sleep_in_ms;
+	time_t			time_to_die_in_ms;
+	time_t			time_to_eat_in_ms;
+	time_t			time_to_sleep_in_ms;
 	long			nbr_limit_meals;
 	time_t			start_time_in_ms;
 	bool			all_threads_ready;
@@ -135,8 +137,12 @@ int		error_failure(const char *str, t_table *table);
 void	cleanup_simulation(t_table *table);
 // time.c
 time_t	gettime(t_time_code time_code);
-void	wait_all_threads(t_table *table);
+void	wait_until_all_threads_ready(t_table *table);
 void	precise_usleep(time_t sleep_time_ms, t_table *table);
 // write_status.c
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
+// dinner.c
+void	*dinner_simulation(void *data);
+// monitoring.c
+bool	simulation_finished(t_table *table);
 #endif //PHILO_H
