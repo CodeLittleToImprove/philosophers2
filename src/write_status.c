@@ -39,7 +39,6 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 	long	elapsed;
 
 	elapsed = gettime(MILLISECOND) - philo->table->start_time_in_ms;
-
 	// if(philo->full)
 	// 	return;
 	safe_mutex_handle(&philo->table->write_status_mutex, LOCK);
