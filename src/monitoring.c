@@ -29,6 +29,8 @@ void	*dinner_monitor(void *data)
 	t_table	*table;
 
 	table = (t_table *) data;
-	// data = NULL;
+	if (table->max_meal_count == 0)
+		return (NULL);
+	set_bool(&table->table_mutex, &table->end_simulation,false);
 	return (NULL);
 }

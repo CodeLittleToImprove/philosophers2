@@ -105,7 +105,7 @@ struct s_table
 	time_t			time_to_die_in_ms;
 	time_t			time_to_eat_in_ms;
 	time_t			time_to_sleep_in_ms;
-	long			nbr_limit_meals;
+	long			max_meal_count;
 	time_t			start_time_in_ms;
 	bool			all_threads_ready;
 	bool			end_simulation;

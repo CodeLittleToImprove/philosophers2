@@ -91,9 +91,9 @@ bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[])
 	// 	|| table->time_to_sleep_in_usec < MIN_TIME_IN_MILLISECONDS)
 	// 	error_exit("Use timestamps greater than 60000 usec", ERROR_MINOR);
 	if (argv[5])
-		table->nbr_limit_meals = ft_atol(argv[5]);
+		table->max_meal_count = ft_atol(argv[5]);
 	else
-		table->nbr_limit_meals = -1;
+		table->max_meal_count = -1;
 	// printf("Number of philosophers: %ld\n", table->philo_nbr);
 	// printf("Time to die (ms): %ld\n", table->time_to_die_in_ms);
 	// printf("Time to eat (ms): %ld\n", table->time_to_eat_in_ms);

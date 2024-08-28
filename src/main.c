@@ -19,7 +19,7 @@ static bool	setup_dinner_simulation(t_table *table)
 	size_t	i;
 
 	i = 0;
-	if (table->nbr_limit_meals == 0) // maybe just return false because there is also no monitorthread
+	if (table->max_meal_count == 0) // maybe just return false because there is also no monitorthread
 		//running or change function to int and error handle that way
 		return(printf("Number of limited meals is 0, nothing to do =)\n"), true);
 	if (table->philo_nbr == 1)
@@ -50,7 +50,7 @@ static void	stop_dinner_simulation(t_table *table)
 	size_t	i;
 
 	i = 0;
-	if (table->nbr_limit_meals == 0)
+	if (table->max_meal_count == 0)
 	{
 		cleanup_simulation(table);
 		return;
