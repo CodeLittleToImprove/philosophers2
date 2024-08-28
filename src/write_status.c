@@ -38,16 +38,15 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 {
 	long	elapsed;
 
-	elapsed = gettime(MILLISECOND) - philo->table->start_simulation;
+	elapsed = gettime(MILLISECOND) - philo->table->start_time_in_ms;
 
-	if(philo->full)
-		return;
-	safe_mutex_handle(&philo->table->write_mutex, LOCK);
+	// if(philo->full)
+	// 	return;
+	safe_mutex_handle(&philo->table->write_status_mutex, LOCK);
 	if (debug == true)
 	{
 		write_status_debug(status, philo, elapsed);
 	}
-
 	else
 		if (((status == TAKE_FIRST_FORK) || (status == TAKE_SECOND_FORK))
 			&& !simulation_finished(philo->table))
@@ -60,5 +59,5 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 			printf(W"%-6ld"G"%d is thinking "RESET"\n", elapsed, philo->id);
 		else if (status == DIED)
 			printf(W"%-6ld"R"%d died\n"RESET, elapsed, philo->id);
-	safe_mutex_handle(&philo->table->write_mutex, UNLOCK);
+	safe_mutex_handle(&philo->table->write_status_mutex, UNLOCK);
 }

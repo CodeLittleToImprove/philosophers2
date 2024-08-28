@@ -24,7 +24,11 @@ bool	simulation_finished(t_table *table)
 	return (simulation_ended);
 }
 
-void	*monitoring_dinner(void *data)
+void	*dinner_monitor(void *data)
 {
+	t_table	*table;
+
+	table = (t_table *) data;
+	// data = NULL;
 	return (NULL);
 }

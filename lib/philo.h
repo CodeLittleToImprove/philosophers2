@@ -144,5 +144,6 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug);
 // dinner.c
 void	*dinner_simulation(void *data);
 // monitoring.c
+void	*dinner_monitor(void *data);
 bool	simulation_finished(t_table *table);
 #endif //PHILO_H

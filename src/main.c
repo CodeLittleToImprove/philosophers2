@@ -24,7 +24,7 @@ static bool	setup_dinner_simulation(t_table *table)
 		return(printf("Number of limited meals is 0, nothing to do =)\n"), true);
 	if (table->philo_nbr == 1)
 	{
-		if (!safe_thread_handle(&table->philos[0].thread_id, lone_philo, &table->philos[0], CREATE))
+		// if (!safe_thread_handle(&table->philos[0].thread_id, lone_philo, &table->philos[0], CREATE))
 			return (false);
 	}
 	else

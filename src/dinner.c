@@ -15,6 +15,35 @@
 // look how the other repo did it
 // add this to philosophers creating
 
+static	void	eat_routine(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->first_fork->fork_mutex);
+	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
+	pthread_mutex_lock(&philo->second_fork->fork_mutex);
+	write_status(TAKE_SECOND_FORK, philo, DEBUG_MODE);
+	pthread_mutex_lock(&philo->philo_mutex);
+	philo->last_meal_time_ms = gettime(MILLISECOND);
+	pthread_mutex_unlock(&philo->philo_mutex);
+	write_status(EATING, philo, DEBUG_MODE);
+	precise_usleep(philo->table->time_to_eat_in_ms, philo->table);
+	if (!simulation_finished(philo->table))
+	{
+		pthread_mutex_lock(&philo->philo_mutex);
+		philo->meals_counter += 1;
+		pthread_mutex_unlock(&philo->philo_mutex);
+	}
+	pthread_mutex_unlock(&philo->first_fork->fork_mutex);
+	pthread_mutex_unlock(&philo->second_fork->fork_mutex);
+// 	set_long(&philo->philo_mutex, &philo->last_meal_time_in_usec, gettime(MILLISECOND));
+// 	philo->meals_counter++;
+// 	write_status(EATING, philo, DEBUG_MODE);
+// 	precise_usleep(philo->table->time_to_eat_in_usec, philo->table);
+// 	if (philo->table->nbr_limit_meals > 0
+// 		&& philo->meals_counter == philo->table->nbr_limit_meals)
+// 		set_bool(&philo->philo_mutex, &philo->full, true );
+// 	safe_mutex_handle(&philo->first_fork->fork_mutex, UNLOCK);
+// 	safe_mutex_handle(&philo->second_fork->fork_mutex, UNLOCK);
+}
 static void	think_routine(t_philo *philo, bool silent)
 {
 	time_t	time_to_think_in_ms;
@@ -32,7 +61,7 @@ static void	think_routine(t_philo *philo, bool silent)
 		time_to_think_in_ms = 1;
 	if (time_to_think_in_ms > 600)
 		time_to_think_in_ms = 200;
-	precise_usleep(time_to_think_in_ms, philo->table); // could change everything to usec
+	precise_usleep(time_to_think_in_ms, philo->table); // could change everything to usec time
 }
 
 void	*dinner_simulation(void *data)
@@ -53,7 +82,7 @@ void	*dinner_simulation(void *data)
 		// maybe add boolean if philo is full
 		eat_routine(philo);
 		write_status(SLEEPING, philo, DEBUG_MODE);
-		// precise_usleep(philo->table->time_to_sleep_in_usec, philo->table); // not sure if should just ms or usec
+		precise_usleep(philo->table->time_to_sleep_in_ms, philo->table); // not sure if should just ms or usec
 		think_routine(philo, false);
 	}
 	return (NULL);
