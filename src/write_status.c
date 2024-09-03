@@ -25,7 +25,7 @@ static void write_status_debug(t_philo_status status, t_philo *philo, long elaps
 		philo->second_fork->fork_id);
 		else if (status == EATING && !simulation_finished(philo->table))
 		printf(W"%6ld"C" %d is eating"
-		"\t\t\t"Y"[ meal_nbr:%ld ]\n"RESET, elapsed, philo->id, philo->meals_counter);
+		"\t\t\t"Y"[ meal_nbr:%ld ]\n"RESET, elapsed, philo->id, philo->times_ate);
 		else if (status == SLEEPING && !simulation_finished(philo->table))
 			printf(W"%6ld"Y" %d is sleeping\n", elapsed, philo->id);
 		else if (status == THINKING && !simulation_finished(philo->table))

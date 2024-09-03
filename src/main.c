@@ -39,9 +39,10 @@ static bool	setup_dinner_simulation(t_table *table)
 	if (!safe_thread_handle(&table->monitor, dinner_monitor, table, CREATE))
 		return (false);
 	table->start_time_in_ms = gettime(MILLISECOND);
-	pthread_mutex_lock(&table->table_mutex);
-	table->all_threads_ready = true;
-	pthread_mutex_unlock(&table->table_mutex);
+	// pthread_mutex_lock(&table->table_mutex);
+	// table->all_threads_ready = true;
+	// pthread_mutex_unlock(&table->table_mutex);
+	set_bool(&table->table_mutex, &table->all_threads_ready, true);
 	return (true);
 }
 

@@ -29,7 +29,7 @@ static	void	eat_routine(t_philo *philo)
 	if (!simulation_finished(philo->table))
 	{
 		pthread_mutex_lock(&philo->philo_mutex);
-		philo->meals_counter += 1;
+		philo->times_ate += 1;
 		pthread_mutex_unlock(&philo->philo_mutex);
 	}
 	pthread_mutex_unlock(&philo->first_fork->fork_mutex);

@@ -89,7 +89,7 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
 	int				id;
-	long			meals_counter;
+	long			times_ate;
 	time_t			last_meal_time_ms;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
