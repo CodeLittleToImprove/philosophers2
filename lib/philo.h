@@ -121,7 +121,7 @@ struct s_table
 bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[]);
 // //safe_function_handler
 void			*safe_malloc(size_t bytes);
-bool			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode);
+bool			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode, const char *mutex_name);
 bool			safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_opcode opcode);
 
 //data_init.c

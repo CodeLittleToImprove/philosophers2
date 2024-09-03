@@ -57,11 +57,11 @@ void	cleanup_simulation(t_table *table)
 	while (i < table->philo_nbr)
 	{
 		philo = table->philos + 1;
-		safe_mutex_handle(&philo->philo_mutex, DESTROY);
+		safe_mutex_handle(&philo->philo_mutex, DESTROY, "philo_mutex");
 		i++;
 	}
-	safe_mutex_handle(&table->write_status_mutex, DESTROY);
-	safe_mutex_handle(&table->table_mutex, DESTROY);
+	safe_mutex_handle(&table->write_status_mutex, DESTROY, "write_mutex");
+	safe_mutex_handle(&table->table_mutex, DESTROY, "table_mutex");
 	free(table->forks);
 	free(table->philos);
 }

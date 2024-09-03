@@ -14,18 +14,18 @@
 
 void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value)
 {
-	safe_mutex_handle(mutex, LOCK);
+	safe_mutex_handle(mutex, LOCK, "bool_mutex_set");
 	*dest = value;
-	safe_mutex_handle(mutex, UNLOCK);
+	safe_mutex_handle(mutex, UNLOCK, "bool_mutex_set");
 }
 
 bool	get_bool(pthread_mutex_t *mutex, bool *value)
 {
 	bool	ret;
 
-	safe_mutex_handle(mutex, LOCK);
+	safe_mutex_handle(mutex, LOCK, "bool_mutex_get");
 	ret = *value;
-	safe_mutex_handle(mutex,UNLOCK);
+	safe_mutex_handle(mutex,UNLOCK, "bool_mutex_get");
 	return (ret);
 }
 //

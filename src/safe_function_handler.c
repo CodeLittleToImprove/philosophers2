@@ -44,7 +44,7 @@ static	void	handle_mutex_error(int status, t_opcode opcode)
 	printf(R "%s\n" RESET, error_message);
 }
 
-bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode)
+bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode, const char *mutex_name)
 {
 	int status = 0;
 
@@ -58,6 +58,7 @@ bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode)
 		status = pthread_mutex_destroy(mutex);
 	if (status != 0)
 	{
+		printf("faulty mutex is %s\n", mutex_name);
 		handle_mutex_error(status, opcode);
 		return (false);
 	}

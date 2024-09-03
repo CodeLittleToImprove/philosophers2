@@ -41,7 +41,7 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 	elapsed = gettime(MILLISECOND) - philo->table->start_time_in_ms;
 	// if(philo->full)
 	// 	return;
-	safe_mutex_handle(&philo->table->write_status_mutex, LOCK);
+	safe_mutex_handle(&philo->table->write_status_mutex, LOCK, "write_status+mutex");
 	if (debug == true)
 	{
 		write_status_debug(status, philo, elapsed);
@@ -58,5 +58,5 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 			printf(W"%-6ld"G"%d is thinking "RESET"\n", elapsed, philo->id);
 		else if (status == DIED)
 			printf(W"%-6ld"R"%d died\n"RESET, elapsed, philo->id);
-	safe_mutex_handle(&philo->table->write_status_mutex, UNLOCK);
+	safe_mutex_handle(&philo->table->write_status_mutex, UNLOCK, "write_status+mutex");
 }

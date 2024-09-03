@@ -32,5 +32,10 @@ void	*dinner_monitor(void *data)
 	if (table->max_meal_count == 0)
 		return (NULL);
 	set_bool(&table->table_mutex, &table->end_simulation,false);
+	// int status = pthread_mutex_lock(&table->table_mutex);
+	// printf("status after lock: %d\n", status);
+	// table->end_simulation = false;
+	// status = pthread_mutex_unlock(&table->table_mutex);
+	// printf("status after unlock: %d\n", status);
 	return (NULL);
 }

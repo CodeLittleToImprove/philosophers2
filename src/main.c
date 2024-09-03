@@ -36,7 +36,7 @@ static bool	setup_dinner_simulation(t_table *table)
 			i++;
 		}
 	}
-	if (!safe_thread_handle(&table->monitor, dinner_monitor, &table->philos[0], CREATE))
+	if (!safe_thread_handle(&table->monitor, dinner_monitor, table, CREATE))
 		return (false);
 	table->start_time_in_ms = gettime(MILLISECOND);
 	pthread_mutex_lock(&table->table_mutex);

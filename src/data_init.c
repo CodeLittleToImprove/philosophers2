@@ -35,13 +35,13 @@ static	bool	init_all_mutexes(t_table *table)
 	size_t	i;
 
 	i = 0;
-	if (!safe_mutex_handle(&table->write_status_mutex, INIT))
+	if (!safe_mutex_handle(&table->write_status_mutex, INIT, "write_mutex"))
 		return (false);
-	if (!safe_mutex_handle(&table->table_mutex, INIT))
+	if (!safe_mutex_handle(&table->table_mutex, INIT, "table_mutex"))
 		return (false);
 	while (i < table->philo_nbr)
 	{
-		if (!safe_mutex_handle(&table->forks[i].fork_mutex, INIT))
+		if (!safe_mutex_handle(&table->forks[i].fork_mutex, INIT, "fork_mutex"))
 			return (false);
 		table->forks[i].fork_id = i;
 		i++;
@@ -74,7 +74,7 @@ static	bool	philo_init(t_table *table)
 		philo = &table->philos[i];
 		philo->id = i + 1;
 		philo->table = table;
-		if (!safe_mutex_handle(&philo->philo_mutex, INIT))
+		if (!safe_mutex_handle(&philo->philo_mutex, INIT, "philo_mutex"))
 			return (false);
 		assign_forks(philo, table->forks, i);
 		i++;
