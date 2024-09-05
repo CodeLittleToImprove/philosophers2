@@ -47,7 +47,7 @@
 # define STR_ERR_MALLOC	"%s error: Could not allocate memory.\n"
 # define STR_ERR_MUTEX	"%s error: Could not create mutex.\n"
 # define ONE_SECOND_IN_MS 1000
-# define DEBUG_MODE 1
+# define DEBUG_MODE 0
 # define EVEN 0
 # define ODD 1
 typedef enum e_status
@@ -146,4 +146,6 @@ void	*dinner_simulation(void *data);
 // monitoring.c
 void	*dinner_monitor(void *data);
 bool	simulation_finished(t_table *table);
+// time.c
+void	sim_start_delay(time_t start_time);
 #endif //PHILO_H

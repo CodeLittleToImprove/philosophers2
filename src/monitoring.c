@@ -24,6 +24,22 @@ bool	simulation_finished(t_table *table)
 	return (simulation_ended);
 }
 
+// static bool	has_starved(t_philo *philo)
+// {
+// 	time_t	current_time_ms;
+// 	time_t	elapsed_time_since_last_meal;
+//
+// 	current_time_ms = gettime(MILLISECOND);
+// 	elapsed_time_since_last_meal = current_time_ms - philo->last_meal_time_ms;
+// 	if (elapsed_time_since_last_meal >= philo->table->time_to_die_in_ms)
+// 	{
+// 		set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
+// 		write_status(DIED, philo, DEBUG_MODE);
+// 		return (true);
+// 	}
+// 	return (false);
+// }
+
 static bool	has_starved(t_philo *philo)
 {
 	time_t	current_time_ms;
@@ -31,12 +47,22 @@ static bool	has_starved(t_philo *philo)
 
 	current_time_ms = gettime(MILLISECOND);
 	elapsed_time_since_last_meal = current_time_ms - philo->last_meal_time_ms;
+
+	// Debugging prints
+	printf("Philosopher %d - Current time (ms): %ld\n", philo->id, current_time_ms);
+	printf("Philosopher %d - Last meal time (ms): %ld\n", philo->id, philo->last_meal_time_ms);
+	printf("Philosopher %d - Elapsed time since last meal (ms): %ld\n", philo->id, elapsed_time_since_last_meal);
+	printf("Philosopher %d - Time to die (ms): %ld\n", philo->id, philo->table->time_to_die_in_ms);
+
 	if (elapsed_time_since_last_meal >= philo->table->time_to_die_in_ms)
 	{
+		printf("Philosopher %d has starved. Setting end_simulation flag to true.\n", philo->id);
 		set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
 		write_status(DIED, philo, DEBUG_MODE);
 		return (true);
 	}
+
+	printf("Philosopher %d has not starved.\n", philo->id);
 	return (false);
 }
 
@@ -49,7 +75,6 @@ static bool	is_philo_dead(t_philo *philo)
 	if (has_starved(philo) == true)
 		has_died = true;
 	pthread_mutex_unlock(&philo->philo_mutex);
-
 	return (has_died);
 }
 
@@ -59,8 +84,10 @@ static bool has_philo_ate_enough(t_philo *philo, long max_meal_count)
 
 	ate_enough = true;
 	if (max_meal_count != -1 && philo->times_ate < max_meal_count)
+	{
+		printf("should be false\n");
 		ate_enough = false;
-
+	}
 	return (ate_enough);
 }
 
@@ -73,8 +100,12 @@ static bool	are_all_philosophers_alive(t_table *table)
 	i = 0;
 	while (i < table->philo_nbr)
 	{
-		if(is_philo_dead(&table->philos[i]) == true)
+		if(is_philo_dead(&table->philos[i]) == false)
+		{
+			// printf("called in is philo dead \n");
 			return (true);
+		}
+
 		if(!has_philo_ate_enough(&table->philos[i], table->max_meal_count))
 			all_ate_enough = false;
 		i++;
@@ -94,9 +125,10 @@ void	*dinner_monitor(void *data)
 	if (table->max_meal_count == 0)
 		return (NULL);
 	set_bool(&table->table_mutex, &table->end_simulation,false);
+	sim_start_delay(table->start_time_in_ms);
 	while (true)
 	{
-		if (are_all_philosophers_alive(table) == true)
+		if (!are_all_philosophers_alive(table))
 			return (NULL);
 		usleep(1000);
 	}
