@@ -117,18 +117,20 @@ static bool has_philo_ate_enough(t_philo *philo, long max_meal_count)
 {
 	// Debugging print to check the philosopher's current meal count and the max allowed meal count
 	printf("Checking if philosopher %d has eaten enough meals.\n", philo->id);
-	printf("Philosopher %d has eaten %ld times. Max meal count is %ld.\n", philo->id, philo->times_ate, max_meal_count);
+	// printf("Philosopher %d has eaten %ld times. Max meal count is %ld.\n", philo->id, philo->times_ate, max_meal_count);
 
+	if (max_meal_count == -1)
+		return (false);
 	if (philo->times_ate >= max_meal_count)
 	{
 		// Debugging print to confirm when the philosopher has eaten enough
 		printf("Philosopher %d has eaten enough meals (%ld times). No more meals required.\n", philo->id, philo->times_ate);
-		return true;
+		return (true);
 	}
 
 	// If the philosopher hasn't eaten enough yet
-	printf("Philosopher %d has not eaten enough. Continuing...\n", philo->id);
-	return false;
+	// printf("Philosopher %d has not eaten enough. Continuing...\n", philo->id);
+	return (false);
 }
 
 
@@ -139,11 +141,16 @@ static bool	are_all_philosophers_alive(t_table *table)
 
 	all_ate_enough = true;
 	i = 0;
+	printf("in all philosophers alive \n");
 	while (i < table->philo_nbr)
 	{
 
 		if (is_philo_dead(&table->philos[i]) == true)
+		{
+			printf("in philosophers if true is dead \n");
 			return (false);
+		}
+
 
 		// Check if a philosopher hasn't eaten enough
 		if (!has_philo_ate_enough(&table->philos[i], table->max_meal_count))
@@ -153,28 +160,65 @@ static bool	are_all_philosophers_alive(t_table *table)
 
 	// If all have eaten enough, stop the simulation
 	if (table->max_meal_count != -1 && all_ate_enough)
+	{
+		printf("set bool end simulation to true because all ate enough\n");
 		set_bool(&table->table_mutex, &table->end_simulation, true);
+	}
+
 
 	return (true);
 }
 
-void	*dinner_monitor(void *data)
+// void	*dinner_monitor(void *data) // old version potencial wrong
+// {
+// 	t_table	*table;
+//
+// 	table = (t_table *) data;
+// 	if (table->max_meal_count == 0)
+// 		return (NULL);
+// 	set_bool(&table->table_mutex, &table->end_simulation,false);
+// 	// printf("monitor thread running \n");
+// 	sim_start_delay(table->start_time_in_ms + 10); // small delay to not immedetialy get busted by monitor
+//
+// 	while (simulation_finished(table) == false)
+// 	{
+// 		if (!are_all_philosophers_alive(table))
+// 			return (NULL);
+// 		usleep(1000);
+// 	}
+// 	return (NULL);
+// 	// int status = pthread_mutex_lock(&table->table_mutex);
+// 	// printf("status after lock: %d\n", status);
+// 	// table->end_simulation = false;
+// 	// status = pthread_mutex_unlock(&table->table_mutex);
+// 	// printf("status after unlock: %d\n", status);
+// }
+
+void	*dinner_monitor(void *data) // new version
 {
 	t_table	*table;
 
 	table = (t_table *) data;
 	if (table->max_meal_count == 0)
-		return (NULL);
-	set_bool(&table->table_mutex, &table->end_simulation,false);
-	printf("monitor thread running \n");
-	sim_start_delay(table->start_time_in_ms + 100); // small delay to not immedetialy get busted by monitor
-
-	while (simulation_finished(table) == false)
 	{
+		printf("exit early max count = 0 \n");
+		return (NULL);
+	}
+
+	set_bool(&table->table_mutex, &table->end_simulation,false);
+	// printf("monitor thread running \n");
+	sim_start_delay(table->start_time_in_ms + 100); // small delay to not immedetialy get busted by monitor
+	printf("pre true while loop\n");
+	while (true)
+	{
+		printf("in while true loop \n");
 		if (!are_all_philosophers_alive(table))
 			return (NULL);
+		if (simulation_finished(table))
+			break;
 		usleep(1000);
 	}
+	printf("after true while loop\n");
 	return (NULL);
 	// int status = pthread_mutex_lock(&table->table_mutex);
 	// printf("status after lock: %d\n", status);
