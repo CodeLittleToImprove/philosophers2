@@ -116,7 +116,7 @@ static bool	is_philo_dead(t_philo *philo)
 static bool has_philo_ate_enough(t_philo *philo, long max_meal_count)
 {
 	// Debugging print to check the philosopher's current meal count and the max allowed meal count
-	printf("Checking if philosopher %d has eaten enough meals.\n", philo->id);
+	// printf("Checking if philosopher %d has eaten enough meals.\n", philo->id);
 	// printf("Philosopher %d has eaten %ld times. Max meal count is %ld.\n", philo->id, philo->times_ate, max_meal_count);
 
 	if (max_meal_count == -1)
@@ -124,7 +124,7 @@ static bool has_philo_ate_enough(t_philo *philo, long max_meal_count)
 	if (philo->times_ate >= max_meal_count)
 	{
 		// Debugging print to confirm when the philosopher has eaten enough
-		printf("Philosopher %d has eaten enough meals (%ld times). No more meals required.\n", philo->id, philo->times_ate);
+		// printf("Philosopher %d has eaten enough meals (%ld times). No more meals required.\n", philo->id, philo->times_ate);
 		return (true);
 	}
 
@@ -141,7 +141,7 @@ static bool	are_all_philosophers_alive(t_table *table)
 
 	all_ate_enough = true;
 	i = 0;
-	printf("in all philosophers alive \n");
+	// printf("in all philosophers alive \n");
 	while (i < table->philo_nbr)
 	{
 
@@ -207,18 +207,19 @@ void	*dinner_monitor(void *data) // new version
 
 	set_bool(&table->table_mutex, &table->end_simulation,false);
 	// printf("monitor thread running \n");
-	sim_start_delay(table->start_time_in_ms + 100); // small delay to not immedetialy get busted by monitor
-	printf("pre true while loop\n");
+	// printf("pre true while loop\n");
+	// sim_start_delay(table->start_time_in_ms + 10);
+	// table->start_time_in_ms = gettime(MILLISECOND);
+	sim_start_delay(table->start_time_in_ms + 10);// small delay to not immediately get busted by monitor
 	while (true)
 	{
-		printf("in while true loop \n");
 		if (!are_all_philosophers_alive(table))
 			return (NULL);
 		if (simulation_finished(table))
 			break;
 		usleep(1000);
 	}
-	printf("after true while loop\n");
+	// printf("after true while loop\n");
 	return (NULL);
 	// int status = pthread_mutex_lock(&table->table_mutex);
 	// printf("status after lock: %d\n", status);

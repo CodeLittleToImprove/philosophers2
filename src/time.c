@@ -59,7 +59,7 @@ void	wait_until_all_threads_ready(t_table *table)
 void	sim_start_delay(time_t start_time)
 {
 	while (gettime(MILLISECOND) < start_time)
-		continue ;
+			;
 }
 
 // void	precise_usleep(time_t sleep_time_ms, t_table *table) // buggy cause to be too fast

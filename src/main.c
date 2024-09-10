@@ -36,9 +36,23 @@ static bool	setup_dinner_simulation(t_table *table)
 			i++;
 		}
 	}
-	if (!safe_thread_handle(&table->monitor, dinner_monitor, table, CREATE))
-		return (false);
+	// printf("pre create monitor thread \n"); // could add a counter to the number of threads and wait for them all instead waiting some random amout
 	table->start_time_in_ms = gettime(MILLISECOND);
+	sim_start_delay(table->start_time_in_ms);
+	if (!safe_thread_handle(&table->monitor, dinner_monitor, table, CREATE))
+	{
+		printf("failed to create monitor thread \n");
+		return (false);
+	}
+
+	// int ret = pthread_create(&table->monitor, NULL, dinner_monitor, (void *) table);
+	// if (ret != 0)
+	// {
+	// 	printf("Failed to create monitor thread, error code: %d, message: %s\n", ret, strerror(ret));
+	// }
+
+
+	// table->start_time_in_ms = gettime(MILLISECOND);
 	// pthread_mutex_lock(&table->table_mutex);
 	// table->all_threads_ready = true;
 	// pthread_mutex_unlock(&table->table_mutex);
@@ -80,7 +94,7 @@ int	main(const int argc, char *argv[])
 				return (EXIT_FAILURE);
 			}
 			stop_dinner_simulation(&table);
-			// clean(&table);
+			cleanup_simulation(&table);
 		}
 		else
 			return (error_msg(STR_INVALID_INPUT_EXIT, -1));
