@@ -56,7 +56,7 @@ void	cleanup_simulation(t_table *table)
 	i = 0;
 	while (i < table->philo_nbr)
 	{
-		philo = table->philos + 1;
+		philo = table->philos + i;
 		safe_mutex_handle(&philo->philo_mutex, DESTROY, "philo_mutex");
 		i++;
 	}

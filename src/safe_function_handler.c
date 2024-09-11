@@ -18,6 +18,7 @@ void	*safe_malloc(size_t bytes)
 	ret = malloc(bytes);
 	if (ret == NULL)
 		printf(R "Error with malloc: Could not allocate memory.\n" RESET);
+	memset(ret, 0, bytes);
 	return (ret);
 }
 
@@ -84,7 +85,7 @@ static	void	handle_thread_error(int status, t_opcode opcode)
 		error_message = "No thread could be found corresponding to that"
 			"specified by the given thread ID, thread.";
 	else if (status == EDEADLK)
-		error_message = "A deadlock was detected oor the value of"
+		error_message = "A deadlock was detected or the value of"
 			"thread specifies the calling thread.";
 	printf(R "%s\n" RESET, error_message);
 }

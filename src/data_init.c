@@ -72,8 +72,10 @@ static	bool	philo_init(t_table *table)
 	while (i < table->philo_nbr)
 	{
 		philo = &table->philos[i];
+		philo->alive = true;
 		philo->id = i + 1;
 		philo->table = table;
+		philo->last_meal_time_ms = gettime(MICROSECOND);
 		if (!safe_mutex_handle(&philo->philo_mutex, INIT, "philo_mutex"))
 			return (false);
 		assign_forks(philo, table->forks, i);

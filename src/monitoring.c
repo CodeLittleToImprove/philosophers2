@@ -40,6 +40,14 @@ bool	simulation_finished(t_table *table)
 // 	return (false);
 // }
 
+static void	mark_philosopher_dead(t_philo *philo)
+{
+	// printf("Philosopher %d has starved. Marking as dead and stopping simulation.\n", philo->id);
+	philo->alive = false;
+	set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
+	write_status(DIED, philo, DEBUG_MODE);
+}
+
 static bool	has_starved(t_philo *philo)
 {
 	time_t	current_time_ms;
@@ -53,12 +61,15 @@ static bool	has_starved(t_philo *philo)
 	// printf("Philosopher %d - Last meal time (ms): %ld\n", philo->id, philo->last_meal_time_ms);
 	// printf("Philosopher %d - Elapsed time since last meal (ms): %ld\n", philo->id, elapsed_time_since_last_meal);
 	// printf("Philosopher %d - Time to die (ms): %ld\n", philo->id, philo->table->time_to_die_in_ms);
+	// printf("Last meal time: %ld, Time to die: %ld\n", elapsed_time_since_last_meal, philo->table->time_to_die_in_ms);
 
 	if (elapsed_time_since_last_meal >= philo->table->time_to_die_in_ms)
 	{
-		printf("Philosopher %d has starved. Setting end_simulation flag to true.\n", philo->id);
-		set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
-		write_status(DIED, philo, DEBUG_MODE);
+		// printf("Philosopher %d has starved. Setting end_simulation flag to true.\n", philo->id);
+		// // philo->alive = false;
+		// set_bool(&philo->table->table_mutex, &philo->table->end_simulation, true);
+		// write_status(DIED, philo, DEBUG_MODE);
+		mark_philosopher_dead(philo);
 		return (true);
 	}
 	return (false);
@@ -147,7 +158,6 @@ static bool	are_all_philosophers_alive(t_table *table)
 
 		if (is_philo_dead(&table->philos[i]) == true)
 		{
-			printf("in philosophers if true is dead \n");
 			return (false);
 		}
 

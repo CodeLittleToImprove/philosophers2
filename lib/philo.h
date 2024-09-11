@@ -21,7 +21,7 @@
 # include <sys/time.h>
 # include <stdio.h>
 # include <errno.h>
-
+# include <string.h>
 // Reset
 # define RESET "\033[0m"
 
@@ -90,6 +90,7 @@ typedef struct s_philo
 {
 	int				id;
 	long			times_ate;
+	bool			alive;
 	time_t			last_meal_time_ms;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
@@ -118,7 +119,7 @@ struct s_table
 
 
 //parsing.c
-bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[]);
+bool			parse_and_validate_table_args(t_table *table, const int argc, char *argv[]);
 // //safe_function_handler
 void			*safe_malloc(size_t bytes);
 bool			safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode, const char *mutex_name);

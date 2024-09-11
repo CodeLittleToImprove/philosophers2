@@ -17,6 +17,8 @@
 
 static	void	eat_routine(t_philo *philo)
 {
+	if (get_bool(&philo->philo_mutex, &philo->alive) == false) // is this realy neeeded
+		return;
 	pthread_mutex_lock(&philo->first_fork->fork_mutex);
 	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
 	pthread_mutex_lock(&philo->second_fork->fork_mutex);
@@ -69,7 +71,6 @@ void	*dinner_simulation(void *data)
 	t_philo *philo;
 
 	philo = (t_philo *)data;
-
 	wait_until_all_threads_ready(philo->table);
 	// maybe use getter setter but with time_t as datatype?
 	pthread_mutex_lock(&philo->philo_mutex);

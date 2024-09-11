@@ -61,7 +61,34 @@ static void write_status_debug(t_philo_status status, t_philo *philo, long elaps
 // 	safe_mutex_handle(&philo->table->write_status_mutex, UNLOCK, "write_status+mutex");
 // }
 
-void	write_status(t_philo_status status, t_philo *philo, bool debug) // basic version
+// void	write_status(t_philo_status status, t_philo *philo, bool debug) // basic version with color
+// {
+// 	long	elapsed;
+//
+// 	elapsed = gettime(MILLISECOND) - philo->table->start_time_in_ms;
+// 	// if(philo->full)
+// 	// 	return;
+// 	safe_mutex_handle(&philo->table->write_status_mutex, LOCK, "write_status+mutex");
+// 	if (debug == true)
+// 	{
+// 		write_status_debug(status, philo, elapsed);
+// 	}
+// 	else
+// 		if (((status == TAKE_FIRST_FORK) || (status == TAKE_SECOND_FORK))
+// 			&& !simulation_finished(philo->table))
+// 			printf(W"%ld"RESET" %d has taken a fork\n", elapsed, philo->id);
+// 		else if (status == EATING && !simulation_finished(philo->table))
+// 			printf(W"%ld"C" %d is eating"RESET"\n", elapsed, philo->id);
+// 		else if (status == SLEEPING && !simulation_finished(philo->table))
+// 			printf(W"%ld"Y" %d is sleeping"RESET"\n", elapsed, philo->id);
+// 		else if (status == THINKING && !simulation_finished(philo->table))
+// 			printf(W"%ld"G" %d is thinking"RESET"\n", elapsed, philo->id);
+// 		else if (status == DIED)
+// 			printf(W"%ld"R" %d died\n"RESET, elapsed, philo->id);
+// 	safe_mutex_handle(&philo->table->write_status_mutex, UNLOCK, "write_status+mutex");
+// }
+
+void	write_status(t_philo_status status, t_philo *philo, bool debug) // basic version without color
 {
 	long	elapsed;
 
@@ -74,16 +101,18 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug) // basic ve
 		write_status_debug(status, philo, elapsed);
 	}
 	else
+	{
 		if (((status == TAKE_FIRST_FORK) || (status == TAKE_SECOND_FORK))
 			&& !simulation_finished(philo->table))
-			printf(W"%ld"RESET" %d has taken a fork\n", elapsed, philo->id);
+			printf("%ld %d has taken a fork\n", elapsed, philo->id);
 		else if (status == EATING && !simulation_finished(philo->table))
-			printf(W"%ld"C" %d is eating"RESET"\n", elapsed, philo->id);
+			printf("%ld %d is eating\n", elapsed, philo->id);
 		else if (status == SLEEPING && !simulation_finished(philo->table))
-			printf(W"%ld"Y" %d is sleeping"RESET"\n", elapsed, philo->id);
+			printf("%ld %d is sleeping\n", elapsed, philo->id);
 		else if (status == THINKING && !simulation_finished(philo->table))
-			printf(W"%ld"G" %d is thinking"RESET"\n", elapsed, philo->id);
+			printf("%ld %d is thinking\n", elapsed, philo->id);
 		else if (status == DIED)
-			printf(W"%ld"R" %d died\n"RESET, elapsed, philo->id);
+			printf("%ld %d died\n", elapsed, philo->id);
+	}
 	safe_mutex_handle(&philo->table->write_status_mutex, UNLOCK, "write_status+mutex");
 }
