@@ -143,6 +143,7 @@ void	precise_usleep(time_t sleep_time_ms, t_table *table);
 // write_status.c
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 // dinner.c
+void	*lone_philo(void *data);
 void	*dinner_simulation(void *data);
 // monitoring.c
 void	*dinner_monitor(void *data);

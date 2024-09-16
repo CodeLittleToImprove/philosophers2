@@ -13,7 +13,7 @@
 #include "../lib/philo.h"
 
 // look how the other repo did it
-// add this to philosophers creating
+
 
 static	void	eat_routine(t_philo *philo)
 {
@@ -64,6 +64,20 @@ static void	think_routine(t_philo *philo, bool silent)
 	if (time_to_think_in_ms > 600)
 		time_to_think_in_ms = 200;
 	precise_usleep(time_to_think_in_ms, philo->table); // could change everything to usec time
+}
+
+void	*lone_philo(void *data)
+{
+	t_philo *philo;
+	philo = (t_philo *)data;
+	wait_until_all_threads_ready(philo->table);
+	pthread_mutex_lock(&philo->philo_mutex);
+	philo->last_meal_time_ms = philo->table->start_time_in_ms;
+	pthread_mutex_unlock(&philo->philo_mutex);
+	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
+	while (!simulation_finished(philo->table))
+		usleep(200);
+	return (NULL);
 }
 
 void	*dinner_simulation(void *data)
