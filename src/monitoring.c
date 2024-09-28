@@ -174,8 +174,6 @@ static bool	are_all_philosophers_alive(t_table *table)
 		printf("set bool end simulation to true because all ate enough\n");
 		set_bool(&table->table_mutex, &table->end_simulation, true);
 	}
-
-
 	return (true);
 }
 

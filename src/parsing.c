@@ -87,14 +87,11 @@ bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[])
 			return (false);
 		i++;
 	}
-	table->philo_nbr = ft_atol(argv[1]);
+	if((table->philo_nbr = ft_atol(argv[1])) > 200)
+		return (error_msg(TOO_MANY_PHILOS, false), false);
 	table->time_to_die_in_ms = ft_atol(argv[2]);
 	table->time_to_eat_in_ms = ft_atol(argv[3]);
 	table->time_to_sleep_in_ms = ft_atol(argv[4]);
-	// if (table->time_to_die_in_usec < MIN_TIME_IN_MILLISECONDS
-	// 	|| table->time_to_eat_in_usec < MIN_TIME_IN_MILLISECONDS
-	// 	|| table->time_to_sleep_in_usec < MIN_TIME_IN_MILLISECONDS)
-	// 	error_exit("Use timestamps greater than 60000 usec", ERROR_MINOR);
 	if (argv[5])
 		table->max_meal_count = ft_atol(argv[5]);
 	else
@@ -104,6 +101,5 @@ bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[])
 	// printf("Time to eat (ms): %ld\n", table->time_to_eat_in_ms);
 	// printf("Time to sleep (ms): %ld\n", table->time_to_sleep_in_ms);
 	// printf("Number of meals limit: %ld\n", table->nbr_limit_meals);
-	// maybe add check if time_to_die is below x MS
 	return (true);
 }

@@ -2,4 +2,8 @@ valgrind --leak-check=full --show-leak-kinds=all ./philo 5 800 200 200
 valgrind --tool=helgrind ./philo 4 310 200 100
 ./test.sh /home/tbui-quo/CLionProjects/evaluations/philosophers2/ 1
 ./philo 3 610 200 80 seems hardcore
-test 14, 15 fails who cares
+test 14, 15, 16 17, 23, 26, 27 fails who cares with new method
+
+test 16, 23, 25 fails with old method
+test 13 seems to fails sometime the helgrind test?
+valgrind --tool=helgrind ./philo 4 410 200 200 10

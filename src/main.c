@@ -45,20 +45,11 @@ static bool	setup_dinner_simulation(t_table *table)
 		printf("failed to create monitor thread \n");
 		return (false);
 	}
-
-	// int ret = pthread_create(&table->monitor, NULL, dinner_monitor, (void *) table);
-	// if (ret != 0)
-	// {
-	// 	printf("Failed to create monitor thread, error code: %d, message: %s\n", ret, strerror(ret));
-	// }
-
-
 	// table->start_time_in_ms = gettime(MILLISECOND);
 	// pthread_mutex_lock(&table->table_mutex);
 	// table->all_threads_ready = true;
 	// pthread_mutex_unlock(&table->table_mutex);
 	set_bool(&table->table_mutex, &table->all_threads_ready, true);
-	// printf("returned true \n");
 	return (true);
 }
 
@@ -67,11 +58,6 @@ static void	stop_dinner_simulation(t_table *table) // original
 	size_t	i;
 
 	i = 0;
-	// if (table->max_meal_count == 0) // double
-	// {
-	// 	cleanup_simulation(table);
-	// 	return;
-	// }
 	while (i < table->philo_nbr)
 	{
 		safe_thread_handle(&table->philos[i].thread_id, NULL, NULL, JOIN);
@@ -80,26 +66,6 @@ static void	stop_dinner_simulation(t_table *table) // original
 	safe_thread_handle(&table->monitor, NULL, NULL, JOIN);
 	// maybe set boolean to end simuluation
 }
-
-// static void	stop_dinner_simulation(t_table *table) // test
-// {
-// 	size_t	i;
-//
-// 	i = 0;
-// 	// if (table->max_meal_count == 0) // double
-// 	// {
-// 	// 	cleanup_simulation(table);
-// 	// 	return;
-// 	// }
-// 	while (i < table->philo_nbr)
-// 	{
-// 		pthread_join(table->philos[i].thread_id, NULL);
-// 		i++;
-// 	}
-// 	// printf("joined all philo threads\n");
-// 	pthread_join(table->monitor, NULL);
-// 	// maybe set boolean to end simuluation
-// }
 
 int	main(const int argc, char *argv[])
 {

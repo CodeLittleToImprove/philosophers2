@@ -22,7 +22,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <string.h>
-// Reset
+// Reset color
 # define RESET "\033[0m"
 
 // Bold text colors
@@ -38,19 +38,20 @@
 # define STR_ERR_NO_DIGIT	"Input contains not only digits"
 # define STR_USAGE	"usage: ./philo <number_of_philosophers> " \
 "<time_to_die> <time_to_eat> <time_to_sleep> " \
-"[number_of_times_each_philosopher_must_eat]\n"
-# define STR_ERR_INPUT_DIGIT	"Not a valid unsigned integer between 0 and 2147483647.\n"
-# define STR_ERR_OVER_INT_MAX	"The value is too big, INT_MAX is the limit"
+"[number_of_times_each_philosopher_must_eat]"
+# define STR_ERR_INPUT_DIGIT	"Not a valid unsigned integer between 0 and 2147483647."
+# define STR_ERR_OVER_INT_MAX	"One parameter is too big, INT_MAX is the limit."
 # define STR_INVALID_INPUT_EXIT	"Error: Invalid input detected. The program will now terminate safely."
-# define STR_ERR_INPUT_POFLOW	"There must be between 1 and 250 philosophers.\n"
-# define STR_ERR_THREAD	"%s error: Could not create thread.\n"
-# define STR_ERR_MALLOC	"%s error: Could not allocate memory.\n"
-# define STR_ERR_MUTEX	"%s error: Could not create mutex.\n"
+# define STR_ERR_THREAD	"%s error: Could not create thread."
+# define STR_ERR_MALLOC	"%s error: Could not allocate memory."
+# define STR_ERR_MUTEX	"%s error: Could not create mutex."
 # define ONE_SECOND_IN_MS 1000
 # define DEBUG_MODE 0
 # define EVEN 0
 # define ODD 1
 # define OVER_INT_MAX -1
+# define TOO_MANY_PHILOS "Please use a number of philosophers which not exceeds 200."
+
 typedef enum e_status
 {
 	EATING,
@@ -135,6 +136,7 @@ bool	get_bool(pthread_mutex_t *mutex, bool *value);
 // long	get_long(pthread_mutex_t *mutex, long *value);
 // utils.c
 int		error_msg(const char *str, int exit_nbr);
+int		error_max_int_msg(const long exceeded_value, const int exit_nbr);
 int		error_failure(const char *str, t_table *table);
 void	cleanup_simulation(t_table *table);
 // time.c

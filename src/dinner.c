@@ -92,6 +92,8 @@ void	*dinner_simulation(void *data)
 	pthread_mutex_unlock(&philo->philo_mutex);
 	if (philo->id % 2 == ODD) // is that enough or i need something like de_synchronize_philos
 		think_routine(philo, true);
+	// if (philo->id + 1 % 2 == EVEN)
+	// 	precise_usleep(philo->table->time_to_eat_in_ms / 2, philo->table);
 	while (!simulation_finished(philo->table))
 	{
 		// maybe add boolean if philo is full
