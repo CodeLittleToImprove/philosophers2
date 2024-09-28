@@ -50,6 +50,7 @@
 # define DEBUG_MODE 0
 # define EVEN 0
 # define ODD 1
+# define OVER_INT_MAX -1
 typedef enum e_status
 {
 	EATING,

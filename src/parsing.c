@@ -62,23 +62,28 @@ static	long	ft_atol(const char *str)
 	num = 0;
 	str = get_number_start(str);
 	while (is_digit(*str))
+	{
+		if (num > (INT_MAX / 10) ||
+			(num == (INT_MAX / 10) && (*str - '0') > 7))
+				return (error_msg(STR_ERR_OVER_INT_MAX, false), -1);
 		num = (num * 10) + (*str++ - '0');
-	if (num > INT_MAX)
-		return (error_msg(STR_ERR_OVER_INT_MAX, false));
+	}
 	return (num);
 }
 
 bool	parse_and_validate_table_args(t_table *table, const int argc, char *argv[])
 {
-	bool	valid_input;
-	int		i;
 
-	valid_input = false;
+	int		i;
+	long	parsed_value;
+
 	i = 1;
 	while (i < argc)
 	{
-		valid_input = is_valid_input(argv[i]);
-		if (!valid_input)
+		if (!is_valid_input(argv[i]))
+			return (false);
+		parsed_value = ft_atol(argv[i]);
+		if (parsed_value == OVER_INT_MAX)
 			return (false);
 		i++;
 	}

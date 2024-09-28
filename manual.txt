@@ -2,3 +2,4 @@ valgrind --leak-check=full --show-leak-kinds=all ./philo 5 800 200 200
 valgrind --tool=helgrind ./philo 4 310 200 100
 ./test.sh /home/tbui-quo/CLionProjects/evaluations/philosophers2/ 1
 ./philo 3 610 200 80 seems hardcore
+test 14, 15 fails who cares
