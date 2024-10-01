@@ -17,7 +17,7 @@
 
 static	void	eat_routine(t_philo *philo)
 {
-	if (get_bool(&philo->philo_mutex, &philo->alive) == false) // is this realy neeeded
+	if (get_bool(&philo->philo_mutex, &philo->alive) == false) // is this realy needed
 		return;
 	pthread_mutex_lock(&philo->first_fork->fork_mutex);
 	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);

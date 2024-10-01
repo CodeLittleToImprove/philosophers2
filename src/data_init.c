@@ -56,7 +56,7 @@ static	void	assign_forks(t_philo *philo, t_fork *forks, size_t philo_position)
 	philo_nbr = philo->table->philo_nbr;
 	philo->first_fork = &forks[(philo_position + 1) % philo_nbr];
 	philo->second_fork = &forks[philo_position];
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == EVEN)
 	{
 		philo->first_fork = &forks[philo_position];
 		philo->second_fork = &forks[(philo_position + 1) % philo_nbr];

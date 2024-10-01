@@ -19,7 +19,7 @@ static bool	setup_dinner_simulation(t_table *table)
 	size_t	i;
 
 	i = 0;
-	if (table->max_meal_count == 0)
+	if (table->max_meal_count == 0) // maybe should run
 		return(printf("Number of limited meals is 0, nothing to do =)\n"), false);
 	table->start_time_in_ms = gettime(MILLISECOND);
 	if (table->philo_nbr == 1)
@@ -42,7 +42,7 @@ static bool	setup_dinner_simulation(t_table *table)
 	sim_start_delay(table->start_time_in_ms);
 	if (!safe_thread_handle(&table->monitor, dinner_monitor, table, CREATE)) // cause for valgrind fail without it i don't get busted
 	{
-		printf("failed to create monitor thread \n");
+		// printf("failed to create monitor thread \n");
 		return (false);
 	}
 	// table->start_time_in_ms = gettime(MILLISECOND);

@@ -207,7 +207,7 @@ void	*dinner_monitor(void *data) // new version
 	t_table	*table;
 
 	table = (t_table *) data;
-	if (table->max_meal_count == 0)
+	if (table->max_meal_count == 0) // not needed anymore
 	{
 		printf("exit early max count = 0 \n");
 		return (NULL);
