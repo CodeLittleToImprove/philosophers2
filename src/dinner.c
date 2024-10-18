@@ -17,25 +17,46 @@
 
 static	void	eat_routine(t_philo *philo)
 {
-	if (get_bool(&philo->philo_mutex, &philo->alive) == false) // is this realy needed
+	// if (get_bool(&philo->philo_mutex, &philo->alive) == false)
+	// 	return;
+	// pthread_mutex_lock(&philo->first_fork->fork_mutex);
+	// write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
+	// pthread_mutex_lock(&philo->second_fork->fork_mutex);
+	// write_status(TAKE_SECOND_FORK, philo, DEBUG_MODE);
+	// pthread_mutex_lock(&philo->philo_mutex);
+	// philo->last_meal_time_ms = gettime(MILLISECOND);
+	// pthread_mutex_unlock(&philo->philo_mutex);
+	// write_status(EATING, philo, DEBUG_MODE);
+	// precise_usleep(philo->table->time_to_eat_in_ms, philo->table);
+	// if (!simulation_finished(philo->table))
+	// {
+	// 	pthread_mutex_lock(&philo->philo_mutex);
+	// 	philo->times_ate += 1;
+	// 	pthread_mutex_unlock(&philo->philo_mutex);
+	// }
+	// pthread_mutex_unlock(&philo->first_fork->fork_mutex);
+	// pthread_mutex_unlock(&philo->second_fork->fork_mutex);
+
+	// try it with safe mutex
+	if (get_bool(&philo->philo_mutex, &philo->alive) == false)
 		return;
-	pthread_mutex_lock(&philo->first_fork->fork_mutex);
+	safe_mutex_handle(&philo->first_fork->fork_mutex, LOCK, "first fork lock");
 	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
-	pthread_mutex_lock(&philo->second_fork->fork_mutex);
+	safe_mutex_handle(&philo->second_fork->fork_mutex, LOCK, "second fork lock");
 	write_status(TAKE_SECOND_FORK, philo, DEBUG_MODE);
-	pthread_mutex_lock(&philo->philo_mutex);
+	safe_mutex_handle(&philo->philo_mutex, LOCK, "philo lock");
 	philo->last_meal_time_ms = gettime(MILLISECOND);
-	pthread_mutex_unlock(&philo->philo_mutex);
+	safe_mutex_handle(&philo->philo_mutex, UNLOCK, "philo unlock");
 	write_status(EATING, philo, DEBUG_MODE);
 	precise_usleep(philo->table->time_to_eat_in_ms, philo->table);
 	if (!simulation_finished(philo->table))
 	{
-		pthread_mutex_lock(&philo->philo_mutex);
+		safe_mutex_handle(&philo->philo_mutex, LOCK, "philo times ate lock");
 		philo->times_ate += 1;
-		pthread_mutex_unlock(&philo->philo_mutex);
+		safe_mutex_handle(&philo->philo_mutex, UNLOCK, "philo times ate unlock");
 	}
-	pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-	pthread_mutex_unlock(&philo->second_fork->fork_mutex);
+	safe_mutex_handle(&philo->first_fork->fork_mutex, UNLOCK, "first fork unlock");
+	safe_mutex_handle(&philo->second_fork->fork_mutex, UNLOCK, "second fork unlock");
 // 	set_long(&philo->philo_mutex, &philo->last_meal_time_in_usec, gettime(MILLISECOND));
 // 	philo->meals_counter++;
 // 	write_status(EATING, philo, DEBUG_MODE);

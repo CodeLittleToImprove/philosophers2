@@ -38,13 +38,9 @@ static bool	setup_dinner_simulation(t_table *table)
 		}
 	}
 	// printf("pre create monitor thread \n"); // could add a counter to the number of threads and wait for them all instead waiting some random amout
-	// table->start_time_in_ms = gettime(MILLISECOND);
 	sim_start_delay(table->start_time_in_ms);
 	if (!safe_thread_handle(&table->monitor, dinner_monitor, table, CREATE)) // cause for valgrind fail without it i don't get busted
-	{
-		// printf("failed to create monitor thread \n");
 		return (false);
-	}
 	// table->start_time_in_ms = gettime(MILLISECOND);
 	// pthread_mutex_lock(&table->table_mutex);
 	// table->all_threads_ready = true;
@@ -53,7 +49,7 @@ static bool	setup_dinner_simulation(t_table *table)
 	return (true);
 }
 
-static void	stop_dinner_simulation(t_table *table) // original
+static void	stop_dinner_simulation(t_table *table)
 {
 	size_t	i;
 
@@ -64,7 +60,6 @@ static void	stop_dinner_simulation(t_table *table) // original
 		i++;
 	}
 	safe_thread_handle(&table->monitor, NULL, NULL, JOIN);
-	// maybe set boolean to end simuluation
 }
 
 int	main(const int argc, char *argv[])
