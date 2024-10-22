@@ -49,7 +49,8 @@ static	bool	init_all_mutexes(t_table *table)
 	return (true);
 }
 
-static	void	assign_forks(t_philo *philo, t_fork *forks, size_t philo_position)
+static	void	assign_forks(t_philo *philo,
+t_fork *forks, size_t philo_position)
 {
 	int	philo_nbr;
 
@@ -90,7 +91,7 @@ bool	data_init(t_table *table)
 	table->all_threads_ready = false;
 	if (!allocate_philos_and_forks(table))
 		return (false);
-	if (table->forks == NULL) // because of clion tells me that
+	if (table->forks == NULL)
 		return (false);
 	if (!init_all_mutexes(table))
 		return (false);

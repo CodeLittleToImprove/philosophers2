@@ -1,20 +1,21 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   safe_function_handler.c                            :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2024/07/09 17:59:46 by tbui-quo          #+#    #+#             */
-// /*   Updated: 2024/07/09 17:59:46 by tbui-quo         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   safe_function_handler.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/18 14:35:47 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/10/18 16:42:22 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../lib/philo.h"
 
 void	*safe_malloc(size_t bytes)
 {
 	void	*ret;
+
 	ret = malloc(bytes);
 	if (ret == NULL)
 		printf(R "Error with malloc: Could not allocate memory.\n" RESET);
@@ -24,31 +25,33 @@ void	*safe_malloc(size_t bytes)
 
 static	void	handle_mutex_error(int status, t_opcode opcode)
 {
-	const char *error_message;
+	const char	*error_message;
 
 	error_message = "Unexpected error, no clue";
 	if (status == 0)
 		return ;
 	if ((status == EINVAL && (opcode == LOCK || opcode == UNLOCK
-		|| opcode == DESTROY)))
+				|| opcode == DESTROY)))
 		error_message = "The value specified by mutex is invalid.";
 	else if (status == EINVAL && opcode == INIT)
 		error_message = "The value specified by attr is invalid.";
 	else if (status == EDEADLK)
-		error_message = "A deadlock would occur if thread blocked waiting for mutex.";
+		error_message = "A deadlock occur if thread blocked waiting for mutex.";
 	else if (status == EPERM)
 		error_message = "The current thread does not hold a lock on mutex.";
 	else if (status == ENOMEM)
-		error_message = "The process cannot allocate enough memory to create another mutex.";
+		error_message = "Process cannot allocate memory to create mutex.";
 	else if (status == EBUSY)
 		error_message = "Mutex is locked.";
 	printf(R "%s\n" RESET, error_message);
 }
 
-bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode, const char *mutex_name)
+bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode,
+	const char *mutex_name)
 {
-	int status = 0;
+	int	status;
 
+	status = 0;
 	if (opcode == LOCK)
 		status = pthread_mutex_lock(mutex);
 	else if (opcode == UNLOCK)
@@ -68,7 +71,7 @@ bool	safe_mutex_handle(pthread_mutex_t *mutex, t_opcode opcode, const char *mute
 
 static	void	handle_thread_error(int status, t_opcode opcode)
 {
-	const char *error_message;
+	const char	*error_message;
 
 	error_message = "Unexpected error, no clue";
 	if (status == 0)
@@ -90,9 +93,10 @@ static	void	handle_thread_error(int status, t_opcode opcode)
 	printf(R "%s\n" RESET, error_message);
 }
 
-bool safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_opcode opcode)
+bool	safe_thread_handle(pthread_t *thread, void *(*foo)(void*),
+	void *data, t_opcode opcode)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (opcode == CREATE)
@@ -103,7 +107,7 @@ bool safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_op
 		status = pthread_detach(*thread);
 	else
 		printf("Wrong opcode for thread_handle: use <CREATE> <JOIN> <DETACH>,"
-		 "aka not possible");
+			"aka not possible");
 	if (status != 0)
 	{
 		handle_thread_error(status, opcode);
@@ -111,4 +115,3 @@ bool safe_thread_handle(pthread_t *thread, void *(*foo)(void*), void *data, t_op
 	}
 	return (true);
 }
-

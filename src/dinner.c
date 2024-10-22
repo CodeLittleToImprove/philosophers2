@@ -12,32 +12,8 @@
 
 #include "../lib/philo.h"
 
-// look how the other repo did it
-
-
 static	void	eat_routine(t_philo *philo)
 {
-	// if (get_bool(&philo->philo_mutex, &philo->alive) == false)
-	// 	return;
-	// pthread_mutex_lock(&philo->first_fork->fork_mutex);
-	// write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
-	// pthread_mutex_lock(&philo->second_fork->fork_mutex);
-	// write_status(TAKE_SECOND_FORK, philo, DEBUG_MODE);
-	// pthread_mutex_lock(&philo->philo_mutex);
-	// philo->last_meal_time_ms = gettime(MILLISECOND);
-	// pthread_mutex_unlock(&philo->philo_mutex);
-	// write_status(EATING, philo, DEBUG_MODE);
-	// precise_usleep(philo->table->time_to_eat_in_ms, philo->table);
-	// if (!simulation_finished(philo->table))
-	// {
-	// 	pthread_mutex_lock(&philo->philo_mutex);
-	// 	philo->times_ate += 1;
-	// 	pthread_mutex_unlock(&philo->philo_mutex);
-	// }
-	// pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-	// pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-
-	// try it with safe mutex
 	if (get_bool(&philo->philo_mutex, &philo->alive) == false)
 		return;
 	safe_mutex_handle(&philo->first_fork->fork_mutex, LOCK, "first fork lock");
@@ -57,16 +33,8 @@ static	void	eat_routine(t_philo *philo)
 	}
 	safe_mutex_handle(&philo->first_fork->fork_mutex, UNLOCK, "first fork unlock");
 	safe_mutex_handle(&philo->second_fork->fork_mutex, UNLOCK, "second fork unlock");
-// 	set_long(&philo->philo_mutex, &philo->last_meal_time_in_usec, gettime(MILLISECOND));
-// 	philo->meals_counter++;
-// 	write_status(EATING, philo, DEBUG_MODE);
-// 	precise_usleep(philo->table->time_to_eat_in_usec, philo->table);
-// 	if (philo->table->nbr_limit_meals > 0
-// 		&& philo->meals_counter == philo->table->nbr_limit_meals)
-// 		set_bool(&philo->philo_mutex, &philo->full, true );
-// 	safe_mutex_handle(&philo->first_fork->fork_mutex, UNLOCK);
-// 	safe_mutex_handle(&philo->second_fork->fork_mutex, UNLOCK);
 }
+
 static void	think_routine(t_philo *philo, bool silent)
 {
 	time_t	time_to_think_in_ms;
@@ -84,12 +52,13 @@ static void	think_routine(t_philo *philo, bool silent)
 		time_to_think_in_ms = 1;
 	if (time_to_think_in_ms > 600)
 		time_to_think_in_ms = 200;
-	precise_usleep(time_to_think_in_ms, philo->table); // could change everything to usec time
+	precise_usleep(time_to_think_in_ms, philo->table);
 }
 
 void	*lone_philo(void *data)
 {
-	t_philo *philo;
+	t_philo	*philo;
+
 	philo = (t_philo *)data;
 	wait_until_all_threads_ready(philo->table);
 	pthread_mutex_lock(&philo->philo_mutex);
@@ -103,24 +72,19 @@ void	*lone_philo(void *data)
 
 void	*dinner_simulation(void *data)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)data;
 	wait_until_all_threads_ready(philo->table);
-	// maybe use getter setter but with time_t as datatype?
-	pthread_mutex_lock(&philo->philo_mutex);
-	philo->last_meal_time_ms = philo->table->start_time_in_ms;
-	pthread_mutex_unlock(&philo->philo_mutex);
-	if (philo->id % 2 == ODD) // is that enough or i need something like de_synchronize_philos
+	set_time_t(&philo->philo_mutex, &philo->last_meal_time_ms,
+		philo->table->start_time_in_ms);
+	if (philo->id % 2 == ODD)
 		think_routine(philo, true);
-	// if (philo->id + 1 % 2 == EVEN)
-	// 	precise_usleep(philo->table->time_to_eat_in_ms / 2, philo->table);
 	while (!simulation_finished(philo->table))
 	{
-		// maybe add boolean if philo is full
 		eat_routine(philo);
 		write_status(SLEEPING, philo, DEBUG_MODE);
-		precise_usleep(philo->table->time_to_sleep_in_ms, philo->table); // not sure if should just ms or usec
+		precise_usleep(philo->table->time_to_sleep_in_ms, philo->table);
 		think_routine(philo, false);
 	}
 	return (NULL);
