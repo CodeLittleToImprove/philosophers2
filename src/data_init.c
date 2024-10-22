@@ -55,12 +55,25 @@ t_fork *forks, size_t philo_position)
 	int	philo_nbr;
 
 	philo_nbr = philo->table->philo_nbr;
-	philo->first_fork = &forks[(philo_position + 1) % philo_nbr];
-	philo->second_fork = &forks[philo_position];
+	if (philo->id % 2 == 1)
+	{
+		printf("odd philo id: %d\n", philo->id);
+		int temp = (philo_position + 1) % philo_nbr;
+		int temp2 = philo_position;
+		philo->first_fork = &forks[(philo_position + 1) % philo_nbr];
+		printf("philo_first fork %d \n", temp);
+		philo->second_fork = &forks[philo_position];
+		printf("philo_second fork %d \n", temp2);
+	}
 	if (philo->id % 2 == EVEN)
 	{
+		int temp = philo_position;
+		int temp2 = (philo_position + 1) % philo_nbr;
+		printf("even philo id: %d\n", philo->id);
 		philo->first_fork = &forks[philo_position];
+		printf("philo_first fork %d \n", temp);
 		philo->second_fork = &forks[(philo_position + 1) % philo_nbr];
+		printf("philo_second fork %d \n", temp2);
 	}
 }
 
