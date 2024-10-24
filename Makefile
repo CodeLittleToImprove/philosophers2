@@ -27,13 +27,11 @@ src/monitoring.c \
 src/monitoring_utils.c \
 src/getter_setter.c
 
-
-
 OBJ = $(SRC:.c=.o)
 
 # Compiler and compilation flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 # ANSI escape codes for colored output
 BLUE = \033[0;34m
@@ -60,8 +58,8 @@ debug: fclean all
 # Test target: build with only the -g flag for memory leak testing
 test: CFLAGS := -g
 test: $(OBJ)
-	@echo "$(BLUE)$(CC) -o $(NAME) $(OBJ) $(LIBS)$(RESET)"
-	@$(CC) -o $(NAME) $(OBJ) $(LIBS)
+	@echo "$(BLUE)$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)$(RESET)"
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
 # Clean target: remove object files
 clean:
@@ -76,6 +74,3 @@ re: fclean all
 
 # Declare the list of phony targets
 .PHONY: all clean fclean re debug test
-
-# Debug target without changing the CFLAGS again
-debug: all
