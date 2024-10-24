@@ -15,7 +15,7 @@
 static	void	eat_routine(t_philo *philo)
 {
 	if (get_bool(&philo->philo_mutex, &philo->alive) == false)
-		return;
+		return ;
 	safe_mutex_handle(&philo->first_fork->fork_mutex, LOCK, "first fork lock");
 	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
 	safe_mutex_handle(&philo->second_fork->fork_mutex, LOCK, "second fork lock");

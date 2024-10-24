@@ -15,6 +15,7 @@ NAME = philo
 
 # Directories and source files
 SRC = src/parsing.c \
+src/parsing_utils.c \
 src/data_init.c \
 src/main.c \
 src/utils.c \
@@ -23,6 +24,7 @@ src/time.c \
 src/write_status.c \
 src/dinner.c \
 src/monitoring.c \
+src/monitoring_utils.c \
 src/getter_setter.c
 
 

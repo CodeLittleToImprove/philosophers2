@@ -12,7 +12,7 @@
 
 #include "../lib/philo.h"
 
-static void stop_dinner_simulation(t_table *table);
+static void	stop_dinner_simulation(t_table *table);
 
 // static bool	setup_dinner_simulation(t_table *table) // my opinion cleaner version
 // {
@@ -50,9 +50,6 @@ static bool	handle_multiple_philosophers(t_table *table);
 
 static bool	setup_dinner_simulation(t_table *table)
 {
-	size_t	i;
-
-	i = 0;
 	if (table->max_meal_count == 0)
 		return (printf("meal count is 0, nothing to do =)\n"), false);
 	table->start_time_in_ms = gettime(MILLISECOND);
@@ -118,7 +115,7 @@ int	main(const int argc, char *argv[])
 		if (parse_and_validate_table_args(&table, argc, argv))
 		{
 			data_init(&table);
-			if(!setup_dinner_simulation(&table))
+			if (!setup_dinner_simulation(&table))
 			{
 				cleanup_simulation(&table);
 				return (EXIT_FAILURE);
